@@ -1,11 +1,12 @@
 import Message from "../models/message.model.js";
 import { getResponse, setJobDescription } from "../services/gemini.js";
 import { v4 as uuidv4 } from 'uuid';
+import Session from "../models/session.model.js";
 
 const submitJD = async (req, res) => {
   try {
     console.log(req.body);
-    const { jd } = req.body;
+    const { jd, email } = req.body;
     // console.log(req.body);
     if (!jd) {
       return res.status(400).json({
@@ -16,6 +17,9 @@ const submitJD = async (req, res) => {
 
     setJobDescription(jd);
     const sessionId = uuidv4();
+
+    const session = new Session({ sessionId, email });
+    await session.save();
 
     const firstQuestion = await getResponse("Give me the first question now. Just question! nothing else be Professional");
 

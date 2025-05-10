@@ -2,12 +2,17 @@ import { useState } from "react";
 import { JobDescriptionForm, MessageInput, ChatWindow } from "../components";
 import axios from "axios";
 import useSessionStorage from "../contexts/useSessionStorage";
+import { useSelector } from "react-redux";
 
 const Session = () => {
   const [jobDesc, setJobDesc] = useSessionStorage("jobDescription","");
   const [isSubmitted, setIsSubmitted] = useSessionStorage("isSubmitted",false);
   const [messages, setMessages] = useSessionStorage("messages",[]);
   const [sessionId, setSessionId] = useSessionStorage("sessionId","");
+  const { user } = useSelector((state) => state.user);
+  const email = user?.email || "";
+  // console.log("User: ",user);
+  // console.log("Email: ",user?.email);
 
   // Function to handle job description submission
   const handleJobSubmit = async () => {
@@ -19,6 +24,7 @@ const Session = () => {
 
       const response = await axios.post("http://localhost:9876/api/chat/submit-jd", {
         jd: jobDesc,
+        email
       });
 
       if (!response?.data?.success) {
