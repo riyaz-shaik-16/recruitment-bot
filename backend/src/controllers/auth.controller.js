@@ -1,0 +1,146 @@
+import axios from "axios";
+import qs from "qs";
+import User from "../models/user.model.js";
+import jwt from "jsonwebtoken";
+
+
+const googleAuth = async (req, res) => {
+  try {
+    const { code } = req.query;
+
+    console.log("Code: ", code);
+
+    if (!code)
+      return res
+        .status(400)
+        .json({ success: false, message: "No code provided!" });
+
+    // Get the access and ID token from Google
+    const tokenRes = await axios.post(
+      "https://oauth2.googleapis.com/token",
+      qs.stringify({
+        code,
+        client_id: process.env.GOOGLE_CLIENT_ID,
+        client_secret: process.env.GOOGLE_CLIENT_SECRET,
+        redirect_uri: process.env.GOOGLE_REDIRECT_URI, // must match frontend
+        grant_type: "authorization_code",
+      }),
+      {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      }
+    );
+
+    const { access_token, id_token } = tokenRes.data;
+
+    // Get user info from Google
+    const userInfo = await axios.get(
+      "https://www.googleapis.com/oauth2/v3/userinfo",
+      {
+        headers: { Authorization: `Bearer ${access_token}` },
+      }
+    );
+
+    const user = userInfo.data;
+
+    // Check if the user already exists
+    let existingUser = await User.findOne({ email: user.email });
+
+    // Function to generate JWT token
+    const generateToken = (user) => {
+      return jwt.sign(
+        {
+          id: user._id,
+          name: user.name,
+          email: user.email,
+        },
+        process.env.JWT_SECRET,
+        {
+          expiresIn: "1d", // Token expires in 1 day
+        }
+      );
+    };
+
+    // If user exists, set cookie with token and return response
+    if (existingUser) {
+      const token = generateToken(existingUser);
+      res.cookie("token", token, {
+        httpOnly: true,
+        secure: false, // Only in production
+        sameSite: "strict",
+        maxAge: 24 * 60 * 60 * 1000, // 1 day
+      });
+
+      return res.status(200).json({
+        success: true,
+        message: "User already exists!",
+        user: existingUser,
+      });
+    }
+
+    // If user doesn't exist, create a new user and save to the database
+    const newUser = new User({
+      googleId: user.sub,
+      name: user.name,
+      email: user.email,
+      picture: user.picture,
+      firstName: user.given_name,
+      lastName: user.family_name,
+    });
+
+    await newUser.save();
+
+    const token = generateToken(newUser);
+
+    // Set cookie with token
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: false, // Only in production
+      sameSite: "strict",
+      maxAge: 24 * 60 * 60 * 1000, // 1 day
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "User created and saved successfully!",
+      user: newUser,
+    });
+  } catch (error) {
+    console.error("Google Auth Error:", error.message);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error!",
+      error: error.message,
+    });
+  }
+};
+
+const logout = async (req, res) => {
+  try {
+    const token =
+      req.cookies?.token || req.header("Authorization")?.replace("Bearer ", "");
+  
+      console.log(req.cookies)
+  
+    console.log(token);
+  
+    if (!token) {
+      return res.status(400).json({
+        success: false,
+        message: "Login First",
+      });
+    }
+    return res.status(200).clearCookie("token").json({
+      success: true,
+      message: "Logged out Successfully!",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success:false,
+      message:"Internall server error"
+    })
+  }
+};
+
+export { googleAuth, logout };
