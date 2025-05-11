@@ -1,6 +1,6 @@
-import  { useState } from "react";
+import { useState } from "react";
 
-const MessageInput = ({ onSend }) => {
+const MessageInput = ({ onSend, interviewEnd }) => {
   const [input, setInput] = useState("");
 
   const handleSubmit = (e) => {
@@ -14,14 +14,23 @@ const MessageInput = ({ onSend }) => {
       <div className="flex items-center gap-2">
         <input
           type="text"
-          className="flex-1 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className={`flex-1 px-4 py-2 border rounded-md transition
+        focus:outline-none focus:ring-2 focus:ring-blue-500
+        ${interviewEnd ? "bg-gray-200 cursor-not-allowed" : ""}`}
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="Type your answer..."
+          placeholder={interviewEnd ? "Interview ended" : "Type your answer..."}
+          disabled={interviewEnd}
         />
         <button
           type="submit"
-          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+          className={`px-4 py-2 text-white rounded-md transition 
+        ${
+          interviewEnd
+            ? "bg-gray-400 cursor-not-allowed"
+            : "bg-blue-600 hover:bg-blue-700"
+        }`}
+          disabled={interviewEnd}
         >
           Send
         </button>

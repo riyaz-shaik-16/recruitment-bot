@@ -2,12 +2,12 @@ import mongoose from "mongoose";
 
 const messageSchema = new mongoose.Schema(
   {
-    from: {
+    role: {
       type: String,
-      enum: ["user", "bot"],
+      enum: ["user", "model"],
       required: true,
     },
-    text: {
+    parts: {
       type: String,
       required: true,
     },

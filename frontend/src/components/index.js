@@ -4,6 +4,7 @@ import ChatWindow from "./ChatWindow"
 import JobDescriptionForm from "./JobDescForm"
 import Message from "./Message"
 import MessageInput from "./MessageInput"
+import Result from "./Result"
 
 export {
     Sidebar,
@@ -11,5 +12,6 @@ export {
     ChatWindow,
     JobDescriptionForm,
     Message,
-    MessageInput
+    MessageInput,
+    Result
 }

@@ -1,6 +1,6 @@
 
-const Message = ({ from, text }) => {
-  const isUser = from === "user";
+const Message = ({ role, parts }) => {
+  const isUser = role === "user";
   return (
     <div className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
       <div
@@ -8,7 +8,7 @@ const Message = ({ from, text }) => {
           isUser ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-800"
         }`}
       >
-        {text}
+        {parts}
       </div>
     </div>
   );

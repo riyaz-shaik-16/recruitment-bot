@@ -32,6 +32,9 @@ Your behavior should be:
   "Could you please answer the previous question so we can continue with the interview?"
 
 ❌ Avoid answering their questions unless clarification is needed for your current question.
+
+At the end of the interview, add this token on a new line: [INTERVIEW_END]
+
 `;
 
 
@@ -47,16 +50,39 @@ const model = genAI.getGenerativeModel({
   systemInstruction: getSystemInstruction(jobDescription),
 });
 
-const getResponse = async (prompt) => {
+const getResponse = async (prompt,history = []) => {
   try {
-    const result = await model.generateContent(prompt);
-    const response = await result.response;
-    const text = await response.text();
+
+    const chat = model.startChat({ history });
+
+    const result = await chat.sendMessage(prompt);
+    const text = await result.response.text();
+
     return text;
   } catch (error) {
+    console.log("Gemini Error:", error);
     return error.message;
   }
 };
+
+
+// const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+
+// const model = genAI.getGenerativeModel({
+//   model: "gemini-2.0-flash",
+//   systemInstruction: getSystemInstruction(jobDescription),
+// });
+
+// const getResponse = async (prompt) => {
+//   try {
+//     const result = await model.generateContent(prompt);
+//     const response = await result.response;
+//     const text = await response.text();
+//     return text;
+//   } catch (error) {
+//     return error.message;
+//   }
+// };
 
 // CLI Interface for testing
 // const rl = readline.createInterface({
