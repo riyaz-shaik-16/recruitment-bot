@@ -10,18 +10,20 @@ const Session = () => {
   const [messages, setMessages] = useSessionStorage("messages", []);
   const [sessionId, setSessionId] = useSessionStorage("sessionId", "");
   const [interviewEnd, setInterviewEnd] = useSessionStorage("interviewEnd", false);
-  const [result,setResult] = useSessionStorage("result",{})
+  const [result,setResult] = useSessionStorage("result",[])
+  const [resultFetched,setResultFetched] = useSessionStorage("resultFetched",false);
   const { user } = useSelector((state) => state.user);
   const email = user?.email || "";
   // console.log("User: ",user);
   // console.log("Email: ",user?.email);
 
-  console.log(Object.keys(result).length !== 0)
+  // result && console.log(Object.keys(result).length !== 0)
 
   const getResult = async() => {
     const resultResponse = await axios.post("http://localhost:9876/api/chat/evaluate-result",{sessionId,history:[{role:"user",parts:[{text:"Hi! lets start the interview!"}]},...messages]});
-    setResult(resultResponse.data.result[0]);
-    console.log(resultResponse.data.result[0]);
+    // setResult(resultResponse.data.result);
+    setResultFetched(true);
+    // console.log(resultResponse.data.result);
     // console.log(resultResponse);
   }
 
@@ -144,23 +146,45 @@ const Session = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
-      <div className="w-full max-w-3xl bg-white rounded-2xl shadow-xl p-6 space-y-6">
-        {!isSubmitted ? (
-          <JobDescriptionForm
-            jobDesc={jobDesc}
-            setJobDesc={setJobDesc}
-            handleSubmit={handleJobSubmit}
-          />
-        ) : (
-          <>
-            <ChatWindow messages={messages} />
-            <MessageInput onSend={handleSendMessage} interviewEnd={interviewEnd} />
-          </>
-        )}
-        { Object.keys(result).length !== 0 &&  <Result result={result}/>}
+    // <div className="bg-gray-100 flex items-center justify-center p-4">
+    //   <div className="min-h-screen w-full max-w-3xl bg-white rounded-2xl shadow-xl p-6 space-y-6">
+    //     {!isSubmitted ? (
+    //       <JobDescriptionForm
+    //         jobDesc={jobDesc}
+    //         setJobDesc={setJobDesc}
+    //         handleSubmit={handleJobSubmit}
+    //       />
+    //     ) : (
+    //       <>
+    //         <ChatWindow messages={messages} />
+    //         <MessageInput onSend={handleSendMessage} interviewEnd={interviewEnd} />
+    //       </>
+    //     )}
+    //     { resultFetched &&  <Result result={result}/>}
+    //   </div>
+    // </div>
+    <div className="bg-gray-900 min-h-screen p-8">
+  <div className="w-full max-w-3xl mx-auto bg-gray-800 rounded-2xl shadow-2xl p-8 space-y-8 border border-gray-700 transition-all duration-300">
+    {!isSubmitted ? (
+      <JobDescriptionForm
+        jobDesc={jobDesc}
+        setJobDesc={setJobDesc}
+        handleSubmit={handleJobSubmit}
+      />
+    ) : (
+      <div className="space-y-8">
+        <ChatWindow messages={messages} />
+        <MessageInput onSend={handleSendMessage} interviewEnd={interviewEnd} />
       </div>
-    </div>
+    )}
+    
+    {resultFetched && (
+      <div className="mt-10">
+        <Result result={result} />
+      </div>
+    )}
+  </div>
+</div>
   );
 };
 

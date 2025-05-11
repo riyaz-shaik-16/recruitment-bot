@@ -1,25 +1,33 @@
-import  { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { Message } from "./";
 
 const ChatWindow = ({ messages }) => {
   const bottomRef = useRef(null);
-
-  // messages.map((msg) => {
-  //   console.log("Message: ", msg);
-  //   console.log("Message role: ", msg.role);
-  //   console.log("Message text: ", msg.parts[0].text);
-  // });
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
   return (
-    <div className="h-[400px] overflow-y-auto space-y-4 border p-4 rounded-md bg-gray-50">
-      {messages?.map((msg, index) => (
-        <Message key={index} role={msg.role} parts={msg.parts[0].text} />
-      ))}
-      <div ref={bottomRef} />
+    <div className="h-[400px] lg:h-[500px] relative overflow-y-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800 border border-gray-700 p-4 rounded-xl bg-gray-800 shadow-md transition-all duration-200">
+      <div className="space-y-4">
+        {messages?.map((msg, index) => (
+          <Message
+            key={index}
+            role={msg.role}
+            parts={msg.parts[0].text}
+            className={`group p-3 rounded-lg transition-all duration-200 ${
+              msg.role === "user"
+                ? "bg-amber-600 text-white ml-8 rounded-tr-none shadow-sm hover:bg-amber-500"
+                : "bg-gray-700 mr-8 rounded-tl-none shadow-sm hover:bg-gray-600"
+            }`}
+          />
+        ))}
+      </div>
+      <div
+        ref={bottomRef}
+        className="h-px bg-gradient-to-r from-transparent via-amber-500 to-transparent opacity-20 my-4"
+      />
     </div>
   );
 };

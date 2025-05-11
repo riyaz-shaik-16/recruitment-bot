@@ -10,29 +10,52 @@ const MessageInput = ({ onSend, interviewEnd }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="group">
       <div className="flex items-center gap-2">
         <input
           type="text"
-          className={`flex-1 px-4 py-2 border rounded-md transition
-        focus:outline-none focus:ring-2 focus:ring-blue-500
-        ${interviewEnd ? "bg-gray-200 cursor-not-allowed" : ""}`}
+          className={`flex-1 px-4 py-3 border-2 text-gray-100 rounded-lg transition-all
+        focus:outline-none focus:border-amber-500 focus:ring-4 focus:ring-amber-500/30
+        ${
+          interviewEnd
+            ? "bg-gray-700 border-gray-600 cursor-not-allowed placeholder-gray-500"
+            : "bg-gray-800 border-gray-700 hover:border-gray-600 placeholder-gray-400"
+        }
+        shadow-sm`}
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder={interviewEnd ? "Interview ended" : "Type your answer..."}
+          placeholder={
+            interviewEnd ? "Interview ended" : "Type your response..."
+          }
           disabled={interviewEnd}
         />
         <button
           type="submit"
-          className={`px-4 py-2 text-white rounded-md transition 
+          className={`px-6 py-3 rounded-lg font-medium transition-all
         ${
           interviewEnd
-            ? "bg-gray-400 cursor-not-allowed"
-            : "bg-blue-600 hover:bg-blue-700"
-        }`}
+            ? "bg-gray-700 text-gray-400 cursor-not-allowed"
+            : "bg-amber-600 text-gray-900 hover:bg-amber-500 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+        }
+        flex items-center gap-2`}
           disabled={interviewEnd}
         >
-          Send
+          <svg
+            className={`w-5 h-5 ${
+              !interviewEnd && "group-hover:animate-pulse"
+            }`}
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+            />
+          </svg>
+          <span>Send</span>
         </button>
       </div>
     </form>
