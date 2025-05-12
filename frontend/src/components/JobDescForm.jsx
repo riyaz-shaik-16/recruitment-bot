@@ -1,4 +1,4 @@
-import React from "React";
+import React from "react";
 
 const JobDescriptionForm = ({ jobDesc, setJobDesc, handleSubmit, isProcessing, isSubmitted, handleReset }) => {
   return (
