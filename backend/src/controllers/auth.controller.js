@@ -57,7 +57,7 @@ const googleAuth = async (req, res) => {
         },
         process.env.JWT_SECRET,
         {
-          expiresIn: "1d", // Token expires in 1 day
+          expiresIn: "1d", 
         }
       );
     };
@@ -67,9 +67,9 @@ const googleAuth = async (req, res) => {
       const token = generateToken(existingUser);
       res.cookie("token", token, {
         httpOnly: true,
-        secure: false, // Only in production
+        secure: false, 
         sameSite: "strict",
-        maxAge: 24 * 60 * 60 * 1000, // 1 day
+        maxAge: 24 * 60 * 60 * 1000, 
       });
 
       return res.status(200).json({
@@ -96,9 +96,9 @@ const googleAuth = async (req, res) => {
     // Set cookie with token
     res.cookie("token", token, {
       httpOnly: true,
-      secure: false, // Only in production
+      secure: false,
       sameSite: "strict",
-      maxAge: 24 * 60 * 60 * 1000, // 1 day
+      maxAge: 24 * 60 * 60 * 1000,
     });
 
     return res.status(200).json({

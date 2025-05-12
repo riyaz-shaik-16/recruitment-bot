@@ -1,1 +1,44 @@
-@import "tailwindcss"
+@import "tailwindcss";
+@theme {
+  --color-black-pearl-50: #f3f7fc;
+  --color-black-pearl-100: #e5eff9;
+  --color-black-pearl-200: #c5ddf2;
+  --color-black-pearl-300: #93c1e6;
+  --color-black-pearl-400: #59a1d7;
+  --color-black-pearl-500: #3486c3;
+  --color-black-pearl-600: #246aa5;
+  --color-black-pearl-700: #1e5586;
+  --color-black-pearl-800: #1d486f;
+  --color-black-pearl-900: #1d3e5d;
+  --color-black-pearl-950: #0d1b2a;
+  --color-mercury-50: #f7f7f5;
+  --color-mercury-100: #ebebe9;
+  --color-mercury-200: #e0e1dd;
+  --color-mercury-300: #bbbdb4;
+  --color-mercury-400: #a0a295;
+  --color-mercury-500: #8d8f80;
+  --color-mercury-600: #818274;
+  --color-mercury-700: #6c6d61;
+  --color-mercury-800: #5a5a52;
+  --color-mercury-900: #4a4944;
+  --color-mercury-950: #272723;
+}
+
+@layer utilities {
+  .scrollbar-custom {
+    scrollbar-width: thin;
+    scrollbar-color: #4a5568 #2d3748;
+  }
+  
+  .scrollbar-custom::-webkit-scrollbar {
+    @apply w-2;
+  }
+
+  .scrollbar-custom::-webkit-scrollbar-track {
+    @apply bg-gray-800;
+  }
+
+  .scrollbar-custom::-webkit-scrollbar-thumb {
+    @apply bg-gray-600 rounded-full;
+  }
+}

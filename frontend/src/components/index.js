@@ -5,6 +5,8 @@ import JobDescriptionForm from "./JobDescForm"
 import Message from "./Message"
 import MessageInput from "./MessageInput"
 import Result from "./Result"
+import Loader from "./Loader"
+import MessageLoader from "./MessageLoader"
 
 export {
     Sidebar,
@@ -13,5 +15,7 @@ export {
     JobDescriptionForm,
     Message,
     MessageInput,
-    Result
+    Result,
+    Loader,
+    MessageLoader
 }

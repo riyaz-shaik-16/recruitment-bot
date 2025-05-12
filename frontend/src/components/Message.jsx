@@ -1,3 +1,4 @@
+import React from "react";
 
 const Message = ({ role, parts }) => {
   const isUser = role === "user";

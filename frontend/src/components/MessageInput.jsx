@@ -15,11 +15,11 @@ const MessageInput = ({ onSend, interviewEnd }) => {
         <input
           type="text"
           className={`flex-1 px-4 py-3 border-2 text-gray-100 rounded-lg transition-all
-        focus:outline-none focus:border-amber-500 focus:ring-4 focus:ring-amber-500/30
+        focus:outline-none focus:border-mercury-50 focus:ring-4 focus:ring-mercury-50/30
         ${
           interviewEnd
             ? "bg-gray-700 border-gray-600 cursor-not-allowed placeholder-gray-500"
-            : "bg-gray-800 border-gray-700 hover:border-gray-600 placeholder-gray-400"
+            : "bg-black-pearl-950 border-gray-700 hover:border-gray-600 placeholder-gray-400"
         }
         shadow-sm`}
           value={input}
@@ -35,7 +35,7 @@ const MessageInput = ({ onSend, interviewEnd }) => {
         ${
           interviewEnd
             ? "bg-gray-700 text-gray-400 cursor-not-allowed"
-            : "bg-amber-600 text-gray-900 hover:bg-amber-500 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+            : "bg-mercury-200 text-gray-900 hover:bg-mercury-50 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
         }
         flex items-center gap-2`}
           disabled={interviewEnd}

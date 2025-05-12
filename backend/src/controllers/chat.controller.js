@@ -8,7 +8,6 @@ const submitJD = async (req, res) => {
   try {
     console.log(req.body);
     const { jd, email } = req.body;
-    // console.log(req.body);
     if (!jd) {
       return res.status(400).json({
         success: false,
@@ -77,7 +76,7 @@ const handleChat = async (req, res) => {
     const userMsg = new Message({ role: "user", parts: message, sessionId });
     await userMsg.save();
 
-    const botReply = await getResponse(message, history); // Replace with OpenAI logic
+    const botReply = await getResponse(message, history); 
 
     console.log("Bot reply: ", botReply);
 
@@ -109,7 +108,6 @@ const evaluateResult = async (req, res) => {
       });
     }
 
-    // Check if result already exists
     const existingResult = await Result.findOne({ sessionId });
 
     if (existingResult) {
@@ -146,7 +144,6 @@ Score should be between 1 and 10.
       history
     );
 
-    // Clean and parse the JSON result
     let cleanedResult;
     try {
       cleanedResult = JSON.parse(
@@ -157,19 +154,6 @@ Score should be between 1 and 10.
       return res.status(500).json({
         success: false,
         message: "AI response could not be parsed. Please try again.",
-      });
-    }
-
-    // Validate fields
-    if (
-      typeof cleanedResult.score !== 'number' ||
-      typeof cleanedResult.answerAnalysis !== 'string' ||
-      typeof cleanedResult.englishProficiency !== 'string' ||
-      typeof cleanedResult.improvementSuggestions !== 'string'
-    ) {
-      return res.status(400).json({
-        success: false,
-        message: "Invalid data format from AI response.",
       });
     }
 

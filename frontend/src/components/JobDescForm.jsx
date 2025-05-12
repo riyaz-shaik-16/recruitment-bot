@@ -1,12 +1,11 @@
-import { useState } from "react";
+import React from "React";
 
-const JobDescriptionForm = ({ jobDesc, setJobDesc, handleSubmit }) => {
-  const [isProcessing, setIsProcessing] = useState(false);
+const JobDescriptionForm = ({ jobDesc, setJobDesc, handleSubmit, isProcessing, isSubmitted, handleReset }) => {
   return (
-    <div className="space-y-6 max-w-3xl mx-auto">
+    <div className="space-y-6 ww-full mx-auto">
       <div className="flex items-center gap-3">
         <svg
-          className="w-8 h-8 text-amber-400"
+          className="w-8 h-8 text-mercury-400"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -18,17 +17,17 @@ const JobDescriptionForm = ({ jobDesc, setJobDesc, handleSubmit }) => {
             d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
           />
         </svg>
-        <h2 className="text-2xl font-bold bg-gradient-to-r from-amber-400 to-amber-600 bg-clip-text text-transparent">
+        <h2 className="text-2xl font-bold bg-gradient-to-r from-mercury-400 to-mercury-200 bg-clip-text text-transparent">
           Enter Job Description
         </h2>
       </div>
 
       <textarea
-        className={`w-full h-48 p-4 rounded-xl border-2 bg-gray-800 border-gray-700 
+        className={`w-full h-48 p-4 rounded-xl border-2 bg-black-pearl-950 border-gray-700 
       text-gray-300 placeholder-gray-500 resize-none transition-all
-      focus:outline-none focus:border-amber-500 focus:ring-4 focus:ring-amber-500/30
+      focus:outline-none focus:border-mercury-50 focus:ring-4 focus:ring-mercury-50/30
       hover:border-gray-600 ${
-        isProcessing ? "opacity-50 cursor-not-allowed" : ""
+        (isProcessing || isSubmitted) ? "opacity-50 cursor-not-allowed" : ""
       }`}
         value={jobDesc}
         onChange={(e) => setJobDesc(e.target.value)}
@@ -38,16 +37,18 @@ const JobDescriptionForm = ({ jobDesc, setJobDesc, handleSubmit }) => {
 - Test-driven development
 - CI/CD pipelines
 - Agile methodologies"
-        disabled={isProcessing}
+        disabled={isProcessing || isSubmitted}
+        readOnly={isSubmitted}
       />
 
-      <button
+      <div className="flex justify-between w-full">
+        <button
         onClick={handleSubmit}
         className={`px-8 py-3 font-medium rounded-xl transition-all flex items-center gap-2
       ${
-        isProcessing
+        (isProcessing || isSubmitted)
           ? "bg-gray-700 text-gray-400 cursor-not-allowed"
-          : "bg-gradient-to-r from-amber-600 to-amber-700 text-gray-900 hover:from-amber-500 hover:to-amber-600 shadow-lg hover:shadow-xl hover:-translate-y-0.5"
+          : "bg-gradient-to-r cursor-pointer from-mercury-200 to-green-400 text-gray-900 hover:from-mercury-50 hover:to-mercury-200 shadow-lg hover:shadow-xl hover:-translate-y-0.5"
       }`}
         disabled={isProcessing}
       >
@@ -66,6 +67,32 @@ const JobDescriptionForm = ({ jobDesc, setJobDesc, handleSubmit }) => {
         </svg>
         {isProcessing ? "Processing..." : "Launch Interview"}
       </button>
+      <button
+        onClick={handleReset}
+        className={`px-8 py-3 font-medium rounded-xl transition-all flex items-center gap-2
+      ${
+        (!isSubmitted)
+          ? "bg-gray-700 text-gray-400 cursor-not-allowed"
+          : "bg-gradient-to-r from-mercury-200 to-green-400 text-gray-900 hover:from-mercury-50 cursor-pointer hover:to-mercury-200 shadow-lg hover:shadow-xl hover:-translate-y-0.5"
+      }`}
+        disabled={!isSubmitted}
+      >
+        <svg
+          className={`w-5 h-5 ${!isProcessing && "animate-pulse"}`}
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M13 10V3L4 14h7v7l9-11h-7z"
+          />
+        </svg>
+        Reset
+      </button>
+      </div>
     </div>
   );
 };
