@@ -8,8 +8,6 @@ const googleAuth = async (req, res) => {
   try {
     const { code } = req.query;
 
-    console.log("Code: ", code);
-
     if (!code)
       return res
         .status(400)
@@ -121,9 +119,6 @@ const logout = async (req, res) => {
     const token =
       req.cookies?.token || req.header("Authorization")?.replace("Bearer ", "");
   
-      console.log(req.cookies)
-  
-    console.log(token);
   
     if (!token) {
       return res.status(400).json({

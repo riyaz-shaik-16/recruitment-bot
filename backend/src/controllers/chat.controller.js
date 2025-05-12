@@ -6,7 +6,6 @@ import Result from "../models/result.model.js";
 
 const submitJD = async (req, res) => {
   try {
-    console.log(req.body);
     const { jd, email } = req.body;
     if (!jd) {
       return res.status(400).json({
@@ -21,15 +20,12 @@ const submitJD = async (req, res) => {
     const session = new Session({ sessionId, email });
     await session.save();
 
-    console.log("Gonna ask First question");
 
     const firstQuestion = await getResponse(
       "Give me the first question now. Just question! nothing else be Professional",
       [{ role: "user", parts: [{ text: "Hi! Lets start the interview!" }] }]
     );
 
-    console.log("First question asked!");
-    console.log("First question: ", firstQuestion);
 
     const botMsg = new Message({
       role: "model",
@@ -45,7 +41,6 @@ const submitJD = async (req, res) => {
       sessionId,
     });
   } catch (error) {
-    console.log("Error in submit jd : ", error.message);
     return res.status(500).json({
       success: false,
       message: "Internal Server Error",
@@ -57,9 +52,6 @@ const handleChat = async (req, res) => {
   try {
     const { message, sessionId, history } = req.body;
 
-    console.log("Message: ", message);
-    console.log("Session ID: ", sessionId);
-    console.log("History: ", history);
     if (!message || !sessionId) {
       return res.status(400).json({
         success: false,
@@ -78,8 +70,6 @@ const handleChat = async (req, res) => {
 
     const botReply = await getResponse(message, history); 
 
-    console.log("Bot reply: ", botReply);
-
     const botMsg = new Message({ role: "model", parts: botReply, sessionId });
     await botMsg.save();
 
@@ -89,7 +79,6 @@ const handleChat = async (req, res) => {
       reply: botMsg,
     });
   } catch (error) {
-    console.log("Error in handleChat: ", error.message);
     return res.status(500).json({
       success: false,
       message: "Internal Server Error!",
