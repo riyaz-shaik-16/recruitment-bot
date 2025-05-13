@@ -7,6 +7,7 @@ import MessageInput from "./MessageInput"
 import Result from "./Result"
 import Loader from "./Loader"
 import MessageLoader from "./MessageLoader"
+import SessionList from "./SessionsListView"
 
 export {
     Sidebar,
@@ -17,5 +18,6 @@ export {
     MessageInput,
     Result,
     Loader,
-    MessageLoader
+    MessageLoader,
+    SessionList
 }

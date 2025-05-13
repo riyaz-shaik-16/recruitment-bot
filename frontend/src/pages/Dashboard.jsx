@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {logout} from "../redux/slices/user.slice";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { Sidebar } from "../components";
+import { SessionList } from "../components";
 
 const Dashboard = () => {
   const { user } = useSelector((state) => state.user);
@@ -38,6 +38,7 @@ const Dashboard = () => {
   return (
     <>
     <h1>Dashboard</h1>
+    <SessionList/>
     </>
   );
 };

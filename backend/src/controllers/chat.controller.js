@@ -17,7 +17,7 @@ const submitJD = async (req, res) => {
     setJobDescription(jd);
     const sessionId = uuidv4();
 
-    const session = new Session({ sessionId, email });
+    const session = new Session({ sessionId, email, jobDescription:jd });
     await session.save();
 
 
@@ -41,6 +41,8 @@ const submitJD = async (req, res) => {
       sessionId,
     });
   } catch (error) {
+
+    console.log(error.message)
     return res.status(500).json({
       success: false,
       message: "Internal Server Error",
@@ -168,6 +170,7 @@ Score should be between 1 and 10.
     });
   }
 };
+
 
 
 export { handleChat, submitJD, evaluateResult };

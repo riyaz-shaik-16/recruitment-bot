@@ -7,11 +7,14 @@ const sessionSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
+  jobDescription:{
+    type:String,
+    required:true
+  },
   email: {
     type: String,
     required: true,
   }
-}, {
-  timestamps: true,
-});
+}, { timestamps: true });
+
 export default mongoose.model('Session', sessionSchema);
