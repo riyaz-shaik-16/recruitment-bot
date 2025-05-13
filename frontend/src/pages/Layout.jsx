@@ -15,7 +15,7 @@ const Layout = () => {
       </div>
 
       {/* Main Content Area */}
-      <main className="lg:ml-64 mt-15 lg:mt-0 min-h-screen flex flex-col flex-1">
+      <main className="lg:ml-64 lg:pt-0 pt-15 bg-black-pearl-950 lg:mt-0 min-h-screen flex flex-col flex-1">
         {/* Scrollable Content */}
         <div className="flex-1 overflow-y-auto">
           <Outlet />

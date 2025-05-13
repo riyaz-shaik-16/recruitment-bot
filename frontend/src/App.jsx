@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter, Routes, Route, Navigate, Outlet } from "react-router-dom";
 import { GoogleOAuthProvider } from "@react-oauth/google";
-import { Login, Dashboard, PageNotFound, Profile, Welcome, Layout, Session, Settings } from "./pages";
+import { Login, Dashboard, PageNotFound, Profile, Welcome, Layout, Session, Settings,DisplaySessionDetails } from "./pages";
 import { useSelector } from "react-redux";
 
 
@@ -38,6 +38,7 @@ const App = () => {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/session" element={<Session/>}/>
             <Route path="/settings" element={<Settings/>}/>
+            <Route path="/session/:sessionID" element={<DisplaySessionDetails/>}/>
           </Route>
         </Route>
 

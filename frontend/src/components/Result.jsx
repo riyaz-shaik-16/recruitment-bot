@@ -1,7 +1,7 @@
 import React from 'react'
 
-const Result = ({result}) => {
-    console.log(result);
+const Result = ({result = {}}) => {
+    console.log("Result in result component: ",result);
   return (
     <div className=" mx-auto bg-black-pearl-950 shadow-xl rounded-2xl p-8 mt-6 border border-gray-700 relative overflow-hidden">
   <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-mercury-400/30 via-mercury-400/60 to-mercury-400/30" />
@@ -24,7 +24,7 @@ const Result = ({result}) => {
         <h3 className="text-xl font-semibold text-gray-300">Score</h3>
       </div>
       <p className="text-3xl font-bold bg-gradient-to-r from-mercury-400 to-mercury-200 bg-clip-text text-transparent">
-        {result.score}<span className="text-xl text-gray-400">/10</span>
+        {result?.score}<span className="text-xl text-gray-400">/10</span>
       </p>
     </div>
 

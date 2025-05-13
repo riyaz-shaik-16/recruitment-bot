@@ -2,25 +2,26 @@ import { configureStore } from "@reduxjs/toolkit";
 import { persistStore, persistReducer } from "redux-persist";
 import createIndexedDBStorage from "redux-persist-indexeddb-storage";
 import userReducer from "../slices/user.slice"
-// import chatReducer from "../slices/chat.slice"
+import sessionReducer from "../slices/session.slice"
  
 const persistUserConfig = {
   key: "user",
   storage: createIndexedDBStorage("myReduxDB"),
 };
 
-// const persistChatConfig = {
-//   key:"messages",
-//   storage: createIndexedDBStorage("myMessageDB")
+// const persistSessionConfig = {
+//   key:"sessions",
+//   storage: createIndexedDBStorage("myReduxDB")
+
 // }
 
 const persistedUserReducer = persistReducer(persistUserConfig, userReducer);
-// const persistedChatReducer = persistReducer(persistChatConfig, chatReducer);
+// const persistedSessionReducer = persistReducer(persistSessionConfig,sessionReducer);
 
 export const store = configureStore({
   reducer: {
     user: persistedUserReducer,
-    // chat: persistedChatReducer
+    sessions:sessionReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

@@ -6,6 +6,8 @@ import Result from "../models/result.model.js"
 const getSessionDetails = async (req,res) => {
     const sessionId = req.query.sessionId;
 
+    console.log(sessionId)
+
     if(!sessionId){
         return res.status(400).json({
             success:false,
@@ -19,7 +21,9 @@ const getSessionDetails = async (req,res) => {
         const result = await Result.find({sessionId});
         const session = await Session.findOne({sessionId});
 
-        return res.json({
+        return res.status(200).json({
+            success:true,
+            message:"Data Fetched Successfully!",
             session,
             messages,
             result
@@ -48,7 +52,7 @@ const getAllSessions = async (req,res) => {
         })
     }
     try {
-        const sessions = await Session.find({email}).sort({ timestamp: 1 })
+        const sessions = await Session.find({email}).sort({ createdAt: -1 })
 
         return res.status(200).json({
             success:true,

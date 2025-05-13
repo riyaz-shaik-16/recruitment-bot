@@ -1,6 +1,6 @@
 import React from "react";
 
-const JobDescriptionForm = ({ jobDesc, setJobDesc, handleSubmit, isProcessing, isSubmitted, handleReset }) => {
+const JobDescriptionForm = ({ jobDesc, setJobDesc = ()=>{}, handleSubmit=()=>{}, isProcessing = false, isSubmitted = false, handleReset =()=>{}, showReset=true }) => {
   return (
     <div className="space-y-6 ww-full mx-auto">
       <div className="flex items-center gap-3">
@@ -71,7 +71,7 @@ const JobDescriptionForm = ({ jobDesc, setJobDesc, handleSubmit, isProcessing, i
         onClick={handleReset}
         className={`px-8 py-3 font-medium rounded-xl transition-all flex items-center gap-2
       ${
-        (!isSubmitted)
+        (!isSubmitted ||!showReset)
           ? "bg-gray-700 text-gray-400 cursor-not-allowed"
           : "bg-gradient-to-r from-mercury-200 to-green-400 text-gray-900 hover:from-mercury-50 cursor-pointer hover:to-mercury-200 shadow-lg hover:shadow-xl hover:-translate-y-0.5"
       }`}

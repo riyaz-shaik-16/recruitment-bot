@@ -15,7 +15,7 @@ const ChatWindow = ({ messages, gettingMessage= false }) => {
           <Message
             key={index}
             role={msg.role}
-            parts={msg.parts[0].text}
+            parts={msg.parts[0].text || msg.parts}
             className={`group p-3 rounded-lg transition-all duration-200 ${
               msg.role === "user"
                 ? "bg-mercury-200 text-white ml-8 rounded-tr-none shadow-sm hover:bg-mercury-50"

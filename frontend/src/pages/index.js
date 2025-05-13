@@ -6,6 +6,7 @@ import Welcome from "./Welcome";
 import Layout from "./Layout";
 import Session from "./Session";
 import Settings from "./Settings";
+import DisplaySessionDetails from "./DisplaySessionDetails";
 
 export {
     Login,
@@ -15,5 +16,6 @@ export {
     Welcome,
     Layout,
     Session,
-    Settings
+    Settings,
+    DisplaySessionDetails
 }

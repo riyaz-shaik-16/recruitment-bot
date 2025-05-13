@@ -14,6 +14,7 @@ import {
 
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { removeSession } from "../redux/slices/session.slice";
 
 const Sidebar = () => {
   const dispatch = useDispatch();
@@ -36,6 +37,7 @@ const Sidebar = () => {
       }
 
       dispatch(logout());
+      dispatch(removeSession());
       navigate("/");
     } catch (error) {
       console.log("Error while logging out: ", error.message);
@@ -125,7 +127,7 @@ const Sidebar = () => {
 
           <div className="border-t border-gray-700 pt-2">
             <div
-              className="flex items-center gap-4 p-1 rounded-lg hover:bg-black-pearl-950 hover:text-mercury-600 cursor-pointer transition-all duration-200 group"
+              className="flex items-center gap-4  rounded-lg hover:bg-black-pearl-950 hover:text-mercury-600 cursor-pointer transition-all duration-200 group"
               onClick={handleLogout}
             >
               <FaSignOutAlt className="text-lg w-6 group-hover:scale-110 transition-transform" />

@@ -1,62 +1,118 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { addSession } from "../redux/slices/session.slice";
+import axios from "axios";
+import { Loader } from "./";
+import { useNavigate } from "react-router-dom";
 
 const SessionList = () => {
-  const sessions = [
-    {
-      sessionId: "66c441d8-f7f2-450a-b3d2-83c7930b6216",
-      email: "sr308379@gmail.com",
-      createdAt: "2025-05-12T10:15:00Z",
-    },
-    {
-      sessionId: "aa2456de-2ab1-4c88-92e5-bb9b1f81ec79",
-      email: "riya.dev@example.com",
-      createdAt: "2025-05-11T18:30:00Z",
-    },
-    {
-      sessionId: "db8fbd47-1a25-4025-b8a6-ef12fa0cf002",
-      email: "mentor.ai@college.edu",
-      createdAt: "2025-05-10T09:45:00Z",
-    },
-  ];
+  const { sessions } = useSelector((state) => state.sessions);
+  const { user } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
+
+  const fetchSessions = async () => {
+    try {
+      setError(null);
+      setLoading(true);
+
+      if (!user?.email) {
+        setLoading(false);
+        return;
+      }
+
+      const { data } = await axios.get(
+        `http://localhost:9876/api/session/get-all-sessions/${user.email}`
+      );
+
+      if (!data.success) throw new Error("Failed to fetch sessions");
+
+      dispatch(addSession(data.sessions));
+    } catch (error) {
+      console.error("Session fetch error:", error);
+      setError(error.response?.data?.message || error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchSessions();
+  }, [user?.email]);
+
+  if (error) {
+    return <div className="text-center p-4 text-red-500">Error: {error}</div>;
+  }
+
   return (
-    <div className="p-6 max-w-4xl mx-auto">
-      <h2 className="text-2xl font-bold mb-4">Session List</h2>
-      <div className="bg-white shadow rounded-lg overflow-hidden">
-        <table className="w-full text-left">
-          <thead className="bg-gray-100">
-            <tr>
-              <th className="px-4 py-2">JD (Email)</th>
-              <th className="px-4 py-2">Date</th>
-              <th className="px-4 py-2">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {sessions.map((session) => (
-              <tr key={session.sessionId} className="border-t">
-                <td className="px-4 py-2">{session.email}</td>
-                <td className="px-4 py-2">
-                  {new Date(session.createdAt).toLocaleString()}
-                </td>
-                <td className="px-4 py-2">
-                  <button
-                    onClick={() => onView(session.sessionId)}
-                    className="bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700"
-                  >
-                    View Session
-                  </button>
-                </td>
-              </tr>
-            ))}
-            {sessions.length === 0 && (
-              <tr>
-                <td colSpan="3" className="px-4 py-2 text-center text-gray-500">
-                  No sessions found.
-                </td>
-              </tr>
+    <div className="h-full scrollbar-custom  relative overflow-y-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800 border border-gray-700 p-4 bg-black-pearl-950 shadow-md transition-all duration-200">
+      {loading ? (
+        <Loader />
+      ) : (
+        <>
+          <h2 className="text-2xl font-bold mb-4 text-mercury-50 sticky top-0 bg-black-pearl-950 py-2 z-10">
+            Previous Sessions
+          </h2>
+
+          <div className="space-y-4">
+            {sessions.length === 0 ? (
+              <div className="text-center py-6">
+                <span className="text-gray-400">
+                  No interview sessions found. Start a new session to begin!
+                </span>
+              </div>
+            ) : (
+              sessions.map((session) => (
+                <div
+                  key={session._id}
+                  className="group p-4 rounded-lg transition-all duration-200 bg-gray-800 hover:bg-gray-700 border border-gray-600"
+                >
+                  <div className="flex items-center justify-between gap-4">
+                    <div className="flex-1 min-w-0">
+                      <div className="font-medium line-clamp-1 text-mercury-50 mb-1">
+                        {(session.jobDescription || "")
+                          .split("\n")[0]
+                          .replace("Job Title: ", "")}
+                      </div>
+                      <div className="text-sm text-gray-400">
+                        {new Date(session.createdAt).toLocaleDateString(
+                          "en-US",
+                          {
+                            month: "short",
+                            day: "2-digit",
+                            year: "numeric",
+                          }
+                        )}
+                        <span className="mx-2">•</span>
+                        {new Date(session.createdAt).toLocaleTimeString(
+                          "en-US",
+                          {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            hour12: true,
+                          }
+                        )}
+                      </div>
+                    </div>
+                    <button
+                      onClick={() =>
+                        navigate(`/session/${session.sessionId}`)
+                      }
+                      className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors whitespace-nowrap flex-shrink-0"
+                    >
+                      View Details
+                    </button>
+                  </div>
+                </div>
+              ))
             )}
-          </tbody>
-        </table>
-      </div>
+          </div>
+
+          <div className="h-px bg-gradient-to-r from-transparent via-gray-600 to-transparent opacity-20 my-4" />
+        </>
+      )}
     </div>
   );
 };

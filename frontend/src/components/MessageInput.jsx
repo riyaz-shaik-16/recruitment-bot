@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const MessageInput = ({ onSend, interviewEnd }) => {
+const MessageInput = ({ onSend = ()=>{}, interviewEnd = false }) => {
   const [input, setInput] = useState("");
 
   const handleSubmit = (e) => {
