@@ -23,7 +23,7 @@ const SettingsPage = () => {
     try {
       const response = await axios.delete(`http://localhost:9876/api/auth/delete-account/${user.email}`,{withCredentials:true});
 
-      console.log(response);
+      // console.log(response);
 
       dispatch(logout());
       dispatch(removeAllSessions());
@@ -34,7 +34,7 @@ const SettingsPage = () => {
       
       navigate("/");
     } catch (err) {
-      console.error("Failed to delete account:", err);
+      // console.error("Failed to delete account:", err);
       alert("Something went wrong. Please try again later.");
     }
   };

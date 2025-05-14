@@ -27,7 +27,7 @@ const DisplaySessionDetails = () => {
             return;
         }
 
-        console.log(response);
+        // console.log(response);
 
         setMessages(response.data.messages || []);
         setResult(response.data.result || []);

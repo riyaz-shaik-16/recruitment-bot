@@ -33,7 +33,7 @@ const SessionList = () => {
 
       dispatch(addSession(data.sessions));
     } catch (error) {
-      console.error("Session fetch error:", error);
+      // console.error("Session fetch error:", error);
       setError(error.response?.data?.message || error.message);
     } finally {
       setLoading(false);
@@ -55,11 +55,11 @@ const SessionList = () => {
       );
 
       if (!response.data.success) {
-        console.log("Error in Delete Post:", response.data.message);
+        // console.log("Error in Delete Post:", response.data.message);
         alert("Internal Server Error!");
       }
 
-      console.log(response);
+      // console.log(response);
 
       // setLoading(prev => !prev);
 
@@ -67,7 +67,7 @@ const SessionList = () => {
 
       dispatch(removeSession({ sessionId }));
     } catch (error) {
-      console.log("Error in handle Delete: ", error.message);
+      // console.log("Error in handle Delete: ", error.message);
       return;
     } finally {
       setLoading((prev) => !prev);

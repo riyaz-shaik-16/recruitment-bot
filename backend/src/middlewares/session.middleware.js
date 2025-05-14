@@ -21,7 +21,7 @@ const checkSessionId = async(req,res,next) => {
 
         
     } catch (error) {
-        console.log("Error in Session Middleware: ",error.message);
+        // console.log("Error in Session Middleware: ",error.message);
         return req.status(500).json({
             success:false,
             message:"Internal Server Error!"

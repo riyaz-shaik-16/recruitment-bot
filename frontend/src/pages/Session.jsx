@@ -35,7 +35,7 @@ const Session = () => {
   const email = user?.email || "";
 
   const getResult = async () => {
-    console.log(sessionId);
+    // console.log(sessionId);
     const resultResponse = await axios.post(
       "http://localhost:9876/api/chat/evaluate-result",
       {
@@ -99,11 +99,11 @@ const Session = () => {
           }
         );
 
-        console.log(response);
+        // console.log(response);
 
         if (!response?.data?.success) {
           alert("Internal Server Error!");
-          console.error("Error in handleJobSubmit:", response);
+          // console.error("Error in handleJobSubmit:", response);
         }
 
         setSessionId(response.data.session.sessionId);
@@ -121,7 +121,7 @@ const Session = () => {
 
       setIsProcessing((prev) => !prev);
     } catch (error) {
-      console.error("Error in handleJobSubmit:", error.message);
+      // console.error("Error in handleJobSubmit:", error.message);
       alert("Internal Server Error!");
     }
   };
@@ -170,7 +170,7 @@ const Session = () => {
 
       if (!response.data.success) {
         alert("Internal Server Error!");
-        console.error("Error in handleSendMessage:", response);
+        // console.error("Error in handleSendMessage:", response);
         return;
       }
 
@@ -198,7 +198,7 @@ const Session = () => {
 
       setGettingMessage((prev) => !prev);
     } catch (error) {
-      console.error("Error in handleSendMessage:", error.message);
+      // console.error("Error in handleSendMessage:", error.message);
       alert("Internal Server Error!");
     }
   };

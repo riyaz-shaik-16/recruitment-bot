@@ -60,7 +60,7 @@ const getResponse = async (prompt,history = []) => {
 
     return text;
   } catch (error) {
-    console.log("Gemini Error:", error);
+    // console.log("Gemini Error:", error);
     return error.message;
   }
 };

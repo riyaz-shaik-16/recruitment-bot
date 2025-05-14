@@ -6,8 +6,8 @@ const checkUserAuthenticated = async(req,res,next) => {
         const token =
       req.cookies?.token || req.header("Authorization")?.replace("Bearer ", "");
 
-      console.log("Token: ",token);
-      console.log("REq Body: ",req.body);
+      // console.log("Token: ",token);
+      // console.log("REq Body: ",req.body);
 
       if(!token){
         return res.status(400).json({
@@ -18,7 +18,7 @@ const checkUserAuthenticated = async(req,res,next) => {
 
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-      console.log("Decoded: ",decoded);
+      // console.log("Decoded: ",decoded);
 
       const existingUser = await User.findOne({email:decoded.email});
 
@@ -31,7 +31,7 @@ const checkUserAuthenticated = async(req,res,next) => {
       next();
         
     } catch (error) {
-        console.log("Error in CheckUSerAuthenticated Middleware: ",error.message);
+        // console.log("Error in CheckUSerAuthenticated Middleware: ",error.message);
         return res.status(500).json({
             suvccess:false,
             message:"Internal Server Error!"

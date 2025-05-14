@@ -44,7 +44,8 @@ const Sidebar = () => {
       dispatch(removeAllSessions());
       navigate("/");
     } catch (error) {
-      console.log("Error while logging out: ", error.message);
+      // console.log("Error while logging out: ", error.message);
+      alert("Something Went Wrong!");
     }
   };
 

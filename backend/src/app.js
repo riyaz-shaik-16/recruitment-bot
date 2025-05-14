@@ -22,9 +22,9 @@ app.use(express.json());
 
 
 
-app.get("/", (req,res) => {
-    res.send("Hii");
-})
+// app.get("/", (req,res) => {
+//     res.send("Hii");
+// })
 
 
 

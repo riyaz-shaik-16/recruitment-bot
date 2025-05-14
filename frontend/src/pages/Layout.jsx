@@ -9,19 +9,17 @@ const Layout = () => {
   }
   return (
     <div className="flex">
-      {/* Sidebar stays fixed */}
+
       <div className="fixed  z-20 left-0 top-0 h-screen w-64">
         <Sidebar />
       </div>
 
-      {/* Main Content Area */}
       <main className="lg:ml-64 lg:pt-0 pt-15 bg-black-pearl-950 lg:mt-0 min-h-screen flex flex-col flex-1 h-full">
-        {/* Scrollable Content */}
+
         <div className="flex-1 overflow-y-auto">
           <Outlet />
         </div>
 
-        {/* Fixed Footer */}
         <div className="fixed mt-2 bottom-0 w-full lg:w-[calc(100%-256px)]
  shrink-0">
           <Footer />

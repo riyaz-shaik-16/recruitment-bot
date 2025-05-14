@@ -35,7 +35,8 @@ const Login = () => {
       }
       // console.log(authResult);
     } catch (error) {
-      console.log(error.message)
+      // console.log(error.message)
+      alert("Something went Wrong!");
     }
   }
 

@@ -35,7 +35,7 @@ const getSessionDetails = async (req,res) => {
         
     } catch (error) {
 
-        console.log(error.message);
+        // console.log(error.message);
 
         return res.status(500).json({
             success:false,
@@ -65,7 +65,7 @@ const getAllSessions = async (req,res) => {
         
     } catch (error) {
 
-        console.log("Error in getAllSessions: ",error.message);
+        // console.log("Error in getAllSessions: ",error.message);
 
         return res.status(500).json({
             success:false,
@@ -97,7 +97,7 @@ const deleteSession = async (req,res) => {
         })
         
     } catch (error) {
-        console.log("Error in Delete Session: ",error.message);
+        // console.log("Error in Delete Session: ",error.message);
         return res.status(500).json({
             success:false,
             message:"Internal Server Error!"

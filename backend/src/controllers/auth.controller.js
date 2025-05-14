@@ -108,7 +108,7 @@ const googleAuth = async (req, res) => {
       user: newUser,
     });
   } catch (error) {
-    console.error("Google Auth Error:", error.message);
+    // console.error("Google Auth Error:", error.message);
     return res.status(500).json({
       success: false,
       message: "Internal server error!",
@@ -145,9 +145,9 @@ const deleteAccount = async(req,res) => {
   try {
     const email = req.params.email;
 
-    console.log("Email in Delete Account: ",email);
+    // console.log("Email in Delete Account: ",email);
 
-    console.log("Existing User from Middleware: ",req.existingUser);
+    // console.log("Existing User from Middleware: ",req.existingUser);
 
     if(!req.existingUser){
       return res.status(400).json({
@@ -168,14 +168,14 @@ const deleteAccount = async(req,res) => {
     })
     
   } catch (error) {
-    console.log("Error in Delete Account: ",error.message);
+    // console.log("Error in Delete Account: ",error.message);
   }
 }
 
 const checkUserAuthenticated = async(req,res) => {
   try {
 
-    console.log("Valid User: ",req.validUser);
+    // console.log("Valid User: ",req.validUser);
       if(!req.validUser){
         return res.status(400).json({
           success:false,
@@ -188,7 +188,7 @@ const checkUserAuthenticated = async(req,res) => {
         message:"Authorized User!"
       })
   } catch (error) {
-    console.log("Error in checkUserAuthenticated: ",error.message);
+    // console.log("Error in checkUserAuthenticated: ",error.message);
     return res.status(500).json({
       succes:false,
       message:"Internal Server Error"

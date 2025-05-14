@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 
 const Profile = () => {
   const { user } = useSelector((state) => state.user);
-  console.log(user); // Make sure user data is available
+  // console.log(user);
 
   return (
     <div className="max-w-2xl mx-auto mt-10 p-6 bg-black-pearl-950 rounded-xl shadow-md text-mercury-50">

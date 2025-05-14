@@ -21,7 +21,7 @@ const sessionSlice = createSlice({
         (session) => session.sessionId !== action.payload.sessionId
       );
 
-      console.log(state.sessions);
+      // console.log(state.sessions);
     },
 
     removeAllSessions: (state) => {
