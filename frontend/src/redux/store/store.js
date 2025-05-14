@@ -9,19 +9,19 @@ const persistUserConfig = {
   storage: createIndexedDBStorage("myReduxDB"),
 };
 
-// const persistSessionConfig = {
-//   key:"sessions",
-//   storage: createIndexedDBStorage("myReduxDB")
+const persistSessionConfig = {
+  key:"sessions",
+  storage: createIndexedDBStorage("myReduxDB")
 
-// }
+}
 
 const persistedUserReducer = persistReducer(persistUserConfig, userReducer);
-// const persistedSessionReducer = persistReducer(persistSessionConfig,sessionReducer);
+const persistedSessionReducer = persistReducer(persistSessionConfig,sessionReducer);
 
 export const store = configureStore({
   reducer: {
     user: persistedUserReducer,
-    sessions:sessionReducer
+    sessions:persistedSessionReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

@@ -31,6 +31,7 @@ const submitJD = async (req, res) => {
       role: "model",
       parts: firstQuestion,
       sessionId,
+      email
     });
     await botMsg.save();
 
@@ -52,7 +53,7 @@ const submitJD = async (req, res) => {
 
 const handleChat = async (req, res) => {
   try {
-    const { message, sessionId, history } = req.body;
+    const { message, sessionId, history, email } = req.body;
 
     if (!message || !sessionId) {
       return res.status(400).json({
@@ -67,12 +68,12 @@ const handleChat = async (req, res) => {
       });
     }
 
-    const userMsg = new Message({ role: "user", parts: message, sessionId });
+    const userMsg = new Message({ role: "user", parts: message, sessionId, email });
     await userMsg.save();
 
     const botReply = await getResponse(message, history); 
 
-    const botMsg = new Message({ role: "model", parts: botReply, sessionId });
+    const botMsg = new Message({ role: "model", parts: botReply, sessionId, email });
     await botMsg.save();
 
     return res.status(200).json({
@@ -90,9 +91,9 @@ const handleChat = async (req, res) => {
 
 const evaluateResult = async (req, res) => {
   try {
-    const { sessionId, history } = req.body;
+    const { sessionId, history, email } = req.body;
 
-    if (!sessionId || !history || history.length === 0) {
+    if (!sessionId || !history || history.length === 0 ||!email) {
       return res.status(400).json({
         success: false,
         message: "All details necessary!",
@@ -155,7 +156,10 @@ Score should be between 1 and 10.
       answerAnalysis: cleanedResult.answerAnalysis,
       englishProficiency: cleanedResult.englishProficiency,
       improvementSuggestions: cleanedResult.improvementSuggestions,
+      email
     });
+    
+    await newResult.save();
 
     return res.status(200).json({
       success: true,

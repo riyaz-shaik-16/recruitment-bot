@@ -138,4 +138,30 @@ const logout = async (req, res) => {
   }
 };
 
+const deleteAcoount = async(req,res) => {
+  try {
+    const email = req.query.email;
+
+    if(!req.existingUser){
+      return res.status(400).json({
+        success:false,
+        message:"Invalid User"
+      })
+    }
+
+    await User.deleteOne({email});
+    await Session.deleteMany({email});
+    await Message.deleteMany({email});
+    await Result.deleteMany({email});
+
+    return res.status(200).json({
+      success:true,
+      mesage:"Account Deleted Successfully!"
+    })
+    
+  } catch (error) {
+    console.log("Error in Delete Account: ",error.message);
+  }
+}
+
 export { googleAuth, logout };

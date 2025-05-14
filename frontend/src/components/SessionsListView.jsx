@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { addSession } from "../redux/slices/session.slice";
+import { addSession, removeSession } from "../redux/slices/session.slice";
 import axios from "axios";
 import { Loader } from "./";
 import { useNavigate } from "react-router-dom";
@@ -12,6 +12,8 @@ const SessionList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+
+  
 
   const fetchSessions = async () => {
     try {
@@ -35,6 +37,40 @@ const SessionList = () => {
       setError(error.response?.data?.message || error.message);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDelete = async (sessionId) => {
+    try {
+      if (!sessionId) {
+        alert("Invalid Session ID");
+        return;
+      }
+
+
+      setLoading((prev) => !prev);
+
+      const response = await axios.delete(
+        `http://localhost:9876/api/session/delete-session?sessionId=${sessionId}`
+      );
+
+      if (!response.data.success) {
+        console.log("Error in Delete Post:", response.data.message);
+        alert("Internal Server Error!");
+      }
+
+      console.log(response);
+
+      // setLoading(prev => !prev);
+
+      
+
+      dispatch(removeSession({ sessionId }));
+    } catch (error) {
+      console.log("Error in handle Delete: ", error.message);
+      return;
+    } finally {
+      setLoading((prev) => !prev);
     }
   };
 
@@ -97,12 +133,16 @@ const SessionList = () => {
                       </div>
                     </div>
                     <button
-                      onClick={() =>
-                        navigate(`/session/${session.sessionId}`)
-                      }
-                      className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors whitespace-nowrap flex-shrink-0"
+                      onClick={() => navigate(`/session/${session.sessionId}`)}
+                      className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors cursor-pointer whitespace-nowrap flex-shrink-0"
                     >
                       View Details
+                    </button>
+                    <button
+                      onClick={() => handleDelete(session.sessionId)}
+                      className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 cursor-pointer transition-colors whitespace-nowrap flex-shrink-0"
+                    >
+                      Delete
                     </button>
                   </div>
                 </div>

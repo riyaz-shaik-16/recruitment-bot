@@ -26,6 +26,7 @@ const Session = () => {
     false
   );
 
+  const { sessions } = useSelector((state) => state.sessions);
   const [gettingMessage, setGettingMessage] = useState(false);
   const [gettingResult, setGettingResult] = useState(false);
   const { user } = useSelector((state) => state.user);
@@ -40,6 +41,7 @@ const Session = () => {
           { role: "user", parts: [{ text: "Hi! lets start the interview!" }] },
           ...messages,
         ],
+        email
       }
     );
     setResult(resultResponse.data.result);
@@ -53,6 +55,16 @@ const Session = () => {
       setGettingResult((prev) => !prev);
     }
   }, [interviewEnd, setInterviewEnd]);
+
+  useEffect(() => {
+    const isValidSession = sessions.some(
+      (session) => session.sessionId === sessionId
+    );
+
+    if (!isValidSession) {
+      handleReset();
+    }
+  }, []);
 
   const handleJobSubmit = async () => {
     try {
@@ -127,6 +139,7 @@ const Session = () => {
             ...messages,
           ],
           sessionId,
+          email
         },
         {
           headers: {
@@ -153,7 +166,6 @@ const Session = () => {
         botReply = response.data.reply.parts.replace("[INTERVIEW_END]", "");
       }
 
-      // Append bot's response using functional update
       setMessages((prevMessages) => {
         const updatedMessages = [
           ...prevMessages,
@@ -182,8 +194,7 @@ const Session = () => {
     setResultFetched(false);
     setGettingMessage(false);
     setGettingResult(false);
-
-  }
+  };
 
   return (
     <div className="bg-black-pearl-950 w-full min-h-screen pt-8 pb-8 pl-4 pr-4">

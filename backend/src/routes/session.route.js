@@ -1,9 +1,12 @@
 import {Router} from "express";
-import { getSessionDetails,getAllSessions  } from "../controllers/session.controller.js";
+import { getSessionDetails,getAllSessions, deleteSession  } from "../controllers/session.controller.js";
+import checkSessionId from "../middlewares/session.middleware.js";
+import checkUser from "../middlewares/auth.middleware.js"
 
 const router = Router();
 
-router.get("/get-session-details",getSessionDetails);
-router.get("/get-all-sessions/:email",getAllSessions);
+router.get("/get-session-details",checkSessionId,getSessionDetails);
+router.get("/get-all-sessions/:email",checkUser,getAllSessions);
+router.delete("/delete-session",checkSessionId,deleteSession);
 
 export default router;

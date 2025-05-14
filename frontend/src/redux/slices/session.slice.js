@@ -16,7 +16,15 @@ const sessionSlice = createSlice({
         }
       });
     },
-    removeSession: (state) => {
+    removeSession: (state, action) => {
+      state.sessions = state.sessions.filter(
+        (session) => session.sessionId !== action.payload.sessionId
+      );
+
+      console.log(state.sessions);
+    },
+
+    removeAllSessions: (state) => {
       state.sessions = [];
     },
   },

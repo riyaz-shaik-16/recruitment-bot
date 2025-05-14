@@ -36,6 +36,13 @@ const Sidebar = () => {
         return;
       }
 
+      sessionStorage.removeItem("jobDescription");
+      sessionStorage.removeItem("isSubmitted");
+      sessionStorage.removeItem("messages");
+      sessionStorage.removeItem("sessionId");
+      sessionStorage.removeItem("interviewEnd");
+      sessionStorage.removeItem("result");
+      sessionStorage.removeItem("resultFetched");
       dispatch(logout());
       dispatch(removeSession());
       navigate("/");
@@ -126,13 +133,13 @@ const Sidebar = () => {
           </div>
 
           <div className="border-t border-gray-700 pt-2">
-            <div
+            <button
               className="flex items-center gap-4  rounded-lg hover:bg-black-pearl-950 hover:text-mercury-600 cursor-pointer transition-all duration-200 group"
               onClick={handleLogout}
             >
               <FaSignOutAlt className="text-lg w-6 group-hover:scale-110 transition-transform" />
               <span>Logout</span>
-            </div>
+            </button>
           </div>
         </div>
       </aside>
@@ -149,12 +156,14 @@ const Sidebar = () => {
           </div>
 
           {/* Hamburger Menu Button */}
-          <button
-            className="p-2 text-gray-300 hover:text-amber-400 transition-colors"
-            onClick={() => setIsSidebarOpen(true)}
-          >
-            <FaBars className="w-6 h-6" />
-          </button>
+          {!isSidebarOpen && (
+            <button
+              className="p-2 text-gray-300 hover:text-amber-400 transition-colors"
+              onClick={() => setIsSidebarOpen(true)}
+            >
+              <FaBars className="w-6 h-6" />
+            </button>
+          )}
         </div>
       </div>
     </>

@@ -20,19 +20,18 @@ const DisplaySessionDetails = () => {
         setLoading(prev => !prev);
         
         const response = await axios.get(`http://localhost:9876/api/session/get-session-details?sessionId=${sessionID}`);
+        
 
         if(!response.data.success){
-            setError("Internal Server Error!");
+            setError(response.data.message || "Internal Server Error!");
             return;
         }
 
         setMessages(response.data.messages || []);
         setResult(response.data.result || []);
         setJobDesc(response.data.session.jobDescription || "");
-
-        console.log(response);
     } catch (error) {
-        setError("Internal Server Error!");
+        setError("Invalid Session ID");
         return;
     } finally {
         setLoading(prev => !prev);
