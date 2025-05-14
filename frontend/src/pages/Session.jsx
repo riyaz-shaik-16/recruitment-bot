@@ -8,7 +8,8 @@ import {
 } from "../components";
 import axios from "axios";
 import useSessionStorage from "../customHooks/useSessionStorage";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { addSession } from "../redux/slices/session.slice";
 
 const Session = () => {
   const [jobDesc, setJobDesc] = useSessionStorage("jobDescription", "");
@@ -26,6 +27,7 @@ const Session = () => {
     false
   );
 
+  const dispatch = useDispatch();
   const { sessions } = useSelector((state) => state.sessions);
   const [gettingMessage, setGettingMessage] = useState(false);
   const [gettingResult, setGettingResult] = useState(false);
@@ -33,6 +35,7 @@ const Session = () => {
   const email = user?.email || "";
 
   const getResult = async () => {
+    console.log(sessionId);
     const resultResponse = await axios.post(
       "http://localhost:9876/api/chat/evaluate-result",
       {
@@ -41,7 +44,7 @@ const Session = () => {
           { role: "user", parts: [{ text: "Hi! lets start the interview!" }] },
           ...messages,
         ],
-        email
+        email,
       }
     );
     setResult(resultResponse.data.result);
@@ -49,12 +52,26 @@ const Session = () => {
   };
 
   useEffect(() => {
-    if (interviewEnd) {
-      setGettingResult((prev) => !prev);
-      getResult();
-      setGettingResult((prev) => !prev);
+  const fetchResult = async () => {
+    // only fetch if session exists
+    const isValidSession = sessions.some(
+      (session) => session.sessionId === sessionId
+    );
+
+    if (!isValidSession) {
+      return;
     }
-  }, [interviewEnd, setInterviewEnd]);
+
+    setGettingResult(true);
+    await getResult();
+    setGettingResult(false);
+  };
+
+  if (interviewEnd) {
+    fetchResult();
+  }
+}, [interviewEnd, sessionId, sessions]);
+
 
   useEffect(() => {
     const isValidSession = sessions.some(
@@ -82,12 +99,15 @@ const Session = () => {
           }
         );
 
+        console.log(response);
+
         if (!response?.data?.success) {
           alert("Internal Server Error!");
           console.error("Error in handleJobSubmit:", response);
         }
 
-        setSessionId(response.data.sessionId);
+        setSessionId(response.data.session.sessionId);
+        dispatch(addSession([response.data.session]));
         setIsSubmitted(true);
 
         setMessages((prevMessages) => [
@@ -139,7 +159,7 @@ const Session = () => {
             ...messages,
           ],
           sessionId,
-          email
+          email,
         },
         {
           headers: {
@@ -214,6 +234,7 @@ const Session = () => {
             <MessageInput
               onSend={handleSendMessage}
               interviewEnd={interviewEnd}
+              gettingMessage={gettingMessage}
             />
           </div>
         )}

@@ -30,7 +30,7 @@ const submitJD = async (req, res) => {
     const botMsg = new Message({
       role: "model",
       parts: firstQuestion,
-      sessionId,
+      sessionId:session.sessionId,
       email
     });
     await botMsg.save();
@@ -39,7 +39,7 @@ const submitJD = async (req, res) => {
       success: true,
       message: "JD set successfully!",
       firstQuestion,
-      sessionId,
+      session,
     });
   } catch (error) {
 
@@ -93,6 +93,10 @@ const evaluateResult = async (req, res) => {
   try {
     const { sessionId, history, email } = req.body;
 
+    console.log("In Evaluate Result: ")
+
+    // console.log(req.body);
+
     if (!sessionId || !history || history.length === 0 ||!email) {
       return res.status(400).json({
         success: false,
@@ -102,6 +106,8 @@ const evaluateResult = async (req, res) => {
 
     const existingResult = await Result.findOne({ sessionId });
 
+    // console.log("Existing Result: ",existingResult)
+
     if (existingResult) {
       return res.status(200).json({
         success: true,
@@ -109,6 +115,8 @@ const evaluateResult = async (req, res) => {
         result: existingResult,
       });
     }
+
+    console.log("Generating Result");
 
     // Prompt the AI for evaluation
     const result = await getResponse(

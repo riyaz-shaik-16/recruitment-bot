@@ -1,7 +1,10 @@
 import axios from "axios";
 import qs from "qs";
-import User from "../models/user.model.js";
 import jwt from "jsonwebtoken";
+import Session from "../models/session.model.js"
+import Message from "../models/message.model.js"
+import Result from "../models/result.model.js"
+import User from "../models/user.model.js"
 
 
 const googleAuth = async (req, res) => {
@@ -138,9 +141,13 @@ const logout = async (req, res) => {
   }
 };
 
-const deleteAcoount = async(req,res) => {
+const deleteAccount = async(req,res) => {
   try {
-    const email = req.query.email;
+    const email = req.params.email;
+
+    console.log("Email in Delete Account: ",email);
+
+    console.log("Existing User from Middleware: ",req.existingUser);
 
     if(!req.existingUser){
       return res.status(400).json({
@@ -149,12 +156,13 @@ const deleteAcoount = async(req,res) => {
       })
     }
 
-    await User.deleteOne({email});
+    
     await Session.deleteMany({email});
     await Message.deleteMany({email});
     await Result.deleteMany({email});
+    await User.deleteOne({email});
 
-    return res.status(200).json({
+    return res.status(200).clearCookie("token").json({
       success:true,
       mesage:"Account Deleted Successfully!"
     })
@@ -164,4 +172,28 @@ const deleteAcoount = async(req,res) => {
   }
 }
 
-export { googleAuth, logout };
+const checkUserAuthenticated = async(req,res) => {
+  try {
+
+    console.log("Valid User: ",req.validUser);
+      if(!req.validUser){
+        return res.status(400).json({
+          success:false,
+          message:"Unauthorized User!"
+        })
+      }
+
+      return res.status(200).json({
+        success:true,
+        message:"Authorized User!"
+      })
+  } catch (error) {
+    console.log("Error in checkUserAuthenticated: ",error.message);
+    return res.status(500).json({
+      succes:false,
+      message:"Internal Server Error"
+    })
+  }
+}
+
+export { googleAuth, logout, deleteAccount, checkUserAuthenticated };

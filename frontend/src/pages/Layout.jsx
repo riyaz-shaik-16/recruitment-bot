@@ -1,11 +1,11 @@
 import { useSelector } from "react-redux";
 import { Footer, Sidebar } from "../components";
-import { Outlet } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 
 const Layout = () => {
   const user = useSelector((state) => state.user);
   if (!user || !user.isAuthenticated) {
-    return <Navigate to="/welcome" />;
+    return <Navigate to="/login" />;
   }
   return (
     <div className="flex">
@@ -15,7 +15,7 @@ const Layout = () => {
       </div>
 
       {/* Main Content Area */}
-      <main className="lg:ml-64 lg:pt-0 pt-15 bg-black-pearl-950 lg:mt-0 min-h-screen flex flex-col flex-1">
+      <main className="lg:ml-64 lg:pt-0 pt-15 bg-black-pearl-950 lg:mt-0 min-h-screen flex flex-col flex-1 h-full">
         {/* Scrollable Content */}
         <div className="flex-1 overflow-y-auto">
           <Outlet />

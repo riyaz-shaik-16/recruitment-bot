@@ -3,9 +3,9 @@ import mongoose from "mongoose";
 const ResultSchema = new mongoose.Schema(
   {
     sessionId: {
-         type: String,
-        required: true, 
-        unique: true 
+        type: String,
+        required: true,
+        unique:true 
     },
     score: { 
         type: Number, 

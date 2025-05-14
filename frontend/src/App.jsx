@@ -1,10 +1,26 @@
+// src/App.js
 import React from "react";
-import { BrowserRouter, Routes, Route, Navigate, Outlet } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  Outlet,
+} from "react-router-dom";
 import { GoogleOAuthProvider } from "@react-oauth/google";
-import { Login, Dashboard, PageNotFound, Profile, Welcome, Layout, Session, Settings,DisplaySessionDetails } from "./pages";
+import {
+  Login,
+  Dashboard,
+  PageNotFound,
+  Profile,
+  Welcome,
+  Layout,
+  Session,
+  Settings,
+  DisplaySessionDetails
+} from "./pages";
+import { ProtectedRoute } from "./components";
 import { useSelector } from "react-redux";
-
-
 
 const GoogleWrapper = () => {
   return (
@@ -14,31 +30,37 @@ const GoogleWrapper = () => {
   );
 };
 
-
-const ProtectedRoute = () => {
-  const user = useSelector(state => state.user);
-  return user && user.isAuthenticated ? <Outlet /> : <Navigate to="/login" />;
-};
-
-
-
 const App = () => {
-  const user = useSelector(state => state.user);
+  const user = useSelector((state) => state.user);
+
+  console.log(user);
 
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={user && user.isAuthenticated ? <Navigate to="/profile" /> : <Welcome />} />
+        <Route
+          path="/"
+          element={
+            user && user.isAuthenticated ? (
+              <Navigate to="/profile" />
+            ) : (
+              <Welcome />
+            )
+          }
+        />
 
         <Route path="/login" element={<GoogleWrapper />} />
-        
+
         <Route element={<ProtectedRoute />}>
           <Route element={<Layout />}>
             <Route path="/profile" element={<Profile />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/session" element={<Session/>}/>
-            <Route path="/settings" element={<Settings/>}/>
-            <Route path="/session/:sessionID" element={<DisplaySessionDetails/>}/>
+            <Route path="/session" element={<Session />} />
+            <Route path="/settings" element={<Settings />} />
+            <Route
+              path="/session/:sessionID"
+              element={<DisplaySessionDetails />}
+            />
           </Route>
         </Route>
 

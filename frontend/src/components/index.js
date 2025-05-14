@@ -8,6 +8,7 @@ import Result from "./Result"
 import Loader from "./Loader"
 import MessageLoader from "./MessageLoader"
 import SessionList from "./SessionsListView"
+import ProtectedRoute from "./ProtectedRoute"
 
 export {
     Sidebar,
@@ -19,5 +20,6 @@ export {
     Result,
     Loader,
     MessageLoader,
-    SessionList
+    SessionList,
+    ProtectedRoute
 }

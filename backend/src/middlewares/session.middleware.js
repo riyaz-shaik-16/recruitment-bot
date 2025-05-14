@@ -4,7 +4,7 @@ const checkSessionId = async(req,res,next) => {
 
         const sessionId = req.query.sessionId;
 
-        console.log("Session ID in middleware: ",sessionId);
+        // console.log("Session ID in middleware: ",sessionId);
 
         const existingSession = await Session.findOne({sessionId});
 

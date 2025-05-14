@@ -30,6 +30,6 @@ const sessionSlice = createSlice({
   },
 });
 
-export const { addSession, removeSession } = sessionSlice.actions;
+export const { addSession, removeSession, removeAllSessions } = sessionSlice.actions;
 
 export default sessionSlice.reducer;

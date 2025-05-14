@@ -27,6 +27,8 @@ const DisplaySessionDetails = () => {
             return;
         }
 
+        console.log(response);
+
         setMessages(response.data.messages || []);
         setResult(response.data.result || []);
         setJobDesc(response.data.session.jobDescription || "");
@@ -54,7 +56,7 @@ const DisplaySessionDetails = () => {
 
   return (
     <>
-      <div className="bg-black-pearl-950 w-full min-h-screen pt-8 pb-8 pl-4 pr-4">
+      <div className="h-full bg-black-pearl-950 w-full min-h-screen pt-8 pb-8 pl-4 pr-4">
         <div className="w-full  mx-auto  bg-black-pearl-950 rounded-2xl shadow-2xl p-8 space-y-8 border border-gray-700 transition-all duration-300">
           <JobDescriptionForm
             jobDesc={jobDesc}

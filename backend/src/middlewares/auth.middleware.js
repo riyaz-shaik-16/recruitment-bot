@@ -5,10 +5,12 @@ const checkUser = async (req,res,next) => {
 
         const email = req.params.email;
 
+        console.log("Email in Middleware: ",email);
+
         const existingUser = await User.findOne({email});
 
         if(!existingUser || existingUser.length === 0){
-            return req.status(400).json({
+            return res.status(400).json({
                 success:false,
                 message:"Invalid User!"
             })
@@ -19,7 +21,7 @@ const checkUser = async (req,res,next) => {
         
     } catch (error) {
         console.log("Error in CheckUser Middleware: ",error.message);
-        return req.status(500).json({
+        return res.status(500).json({
             success:false,
             message:"Internal Server Error!"
         })

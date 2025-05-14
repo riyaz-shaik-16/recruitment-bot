@@ -22,6 +22,9 @@ const getSessionDetails = async (req,res) => {
         const messages = await Message.find({sessionId});
         const result = await Result.find({sessionId});
 
+        // console.log("Result: ",currResult);
+        // console.log("Messages: ",messages);
+
         return res.status(200).json({
             success:true,
             message:"Data Fetched Successfully!",
@@ -84,14 +87,13 @@ const deleteSession = async (req,res) => {
 
     try {
 
-        const deletedSession = await Session.deleteOne({sessionId});
-        const deletedMessages = await Message.deleteMany({sessionId});
-        const deletedResult = await Result.deleteMany({sessionId});
+        await Session.deleteOne({sessionId});
+        await Message.deleteMany({sessionId});
+        await Result.deleteOne({sessionId});
 
         return res.status(200).json({
             success:true,
             message:"Deleted Successfully!",
-            deletedResult
         })
         
     } catch (error) {

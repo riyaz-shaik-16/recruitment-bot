@@ -2,10 +2,14 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
+import {logout} from "../redux/slices/user.slice.js"
+import {removeAllSessions} from "../redux/slices/session.slice.js"
 
 const SettingsPage = () => {
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.user);
+
+  const dispatch = useDispatch();
 
   const handleDeleteAccount = async () => {
     const confirmed = window.confirm(
@@ -14,8 +18,15 @@ const SettingsPage = () => {
 
     if (!confirmed) return;
 
+    // http://localhost:9876/api/auth/delete-account/sr308379@gmail.com
+
     try {
-      await axios.delete(`http://localhost:9876/api/user/delete-user/${user.email}`);
+      const response = await axios.delete(`http://localhost:9876/api/auth/delete-account/${user.email}`,{withCredentials:true});
+
+      console.log(response);
+
+      dispatch(logout());
+      dispatch(removeAllSessions());
 
       sessionStorage.clear();
       dispatch(removeAllSessions());
@@ -39,7 +50,7 @@ const SettingsPage = () => {
         </p>
         <button
           onClick={handleDeleteAccount}
-          className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg transition duration-200 font-semibold"
+          className="bg-red-600 cursor-pointer hover:bg-red-700 text-white px-6 py-3 rounded-lg transition duration-200 font-semibold"
         >
           Delete My Account
         </button>
