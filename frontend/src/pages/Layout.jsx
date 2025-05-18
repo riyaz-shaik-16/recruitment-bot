@@ -10,7 +10,7 @@ const Layout = () => {
   return (
     <div className="flex">
 
-      <div className="fixed  z-20 left-0 top-0 h-screen w-64">
+      <div className="h-screen">
         <Sidebar />
       </div>
 

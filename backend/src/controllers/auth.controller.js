@@ -8,6 +8,8 @@ import User from "../models/user.model.js"
 
 
 const googleAuth = async (req, res) => {
+
+  console.log("In Google Auth Backend");
   try {
     const { code } = req.query;
 
@@ -69,7 +71,7 @@ const googleAuth = async (req, res) => {
       res.cookie("token", token, {
         httpOnly: true,
         secure: false, 
-        sameSite: "strict",
+        sameSite: "none",
         maxAge: 24 * 60 * 60 * 1000, 
       });
 
@@ -98,7 +100,7 @@ const googleAuth = async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true,
       secure: false,
-      sameSite: "strict",
+      sameSite: "none",
       maxAge: 24 * 60 * 60 * 1000,
     });
 
@@ -108,7 +110,7 @@ const googleAuth = async (req, res) => {
       user: newUser,
     });
   } catch (error) {
-    // console.error("Google Auth Error:", error.message);
+    console.error("Google Auth Error:", error.message);
     return res.status(500).json({
       success: false,
       message: "Internal server error!",

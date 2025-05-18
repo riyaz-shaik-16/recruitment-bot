@@ -11,10 +11,10 @@ const MessageInput = ({ onSend = ()=>{}, interviewEnd = false, gettingMessage = 
 
   return (
     <form onSubmit={handleSubmit} className="group">
-      <div className="flex items-center gap-2">
+      <div className="flex flex-col sm:flex-row items-center gap-2">
         <input
           type="text"
-          className={`flex-1 px-4 py-3 border-2 text-gray-100 rounded-lg transition-all
+          className={`w-full sm:flex-1 px-4 py-3 border-2 text-gray-100 rounded-lg transition-all
         focus:outline-none focus:border-mercury-50 focus:ring-4 focus:ring-mercury-50/30
         ${
           interviewEnd || gettingMessage
@@ -32,7 +32,7 @@ const MessageInput = ({ onSend = ()=>{}, interviewEnd = false, gettingMessage = 
         />
         <button
           type="submit"
-          className={`px-6 py-3 rounded-lg font-medium transition-all
+          className={`px-6 py-3 w-full sm:w-30 rounded-lg font-medium transition-all
         ${
           interviewEnd || gettingMessage
             ? "bg-gray-700 text-gray-400 cursor-not-allowed"

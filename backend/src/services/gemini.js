@@ -1,7 +1,4 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
-// import readline from "readline";
-
-let jobDescription = "";
 
 const getSystemInstruction = (jobDescription) => `
 You are a professional recruiter conducting a job interview.
@@ -34,35 +31,27 @@ Your behavior should be:
 ❌ Avoid answering their questions unless clarification is needed for your current question.
 
 At the end of the interview, add this token on a new line: [INTERVIEW_END]
-
 `;
-
-
-
-const setJobDescription = (jd) => {
-  jobDescription = jd;
-}
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
-const model = genAI.getGenerativeModel({
-  model: "gemini-2.5-flash-preview-04-17",
-  systemInstruction: getSystemInstruction(jobDescription),
-});
-
-const getResponse = async (prompt,history = []) => {
+const getResponse = async (prompt, history = [], jobDescription = "") => {
   try {
+    const model = genAI.getGenerativeModel({
+      model: "gemini-2.5-flash-preview-04-17",
+      systemInstruction: getSystemInstruction(jobDescription),
+    });
 
     const chat = model.startChat({ history });
 
     const result = await chat.sendMessage(prompt);
     const text = await result.response.text();
 
-    return text;
+    return typeof text === "string" ? text : JSON.stringify(text);
   } catch (error) {
-    // console.log("Gemini Error:", error);
-    return error.message;
+    console.error("Gemini Error:", error);
+    return error.message || "Something went wrong with the AI.";
   }
 };
 
-export { getResponse, setJobDescription };
+export { getResponse };

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from "../utils/axiosInstance";
 import { Loader, JobDescriptionForm, ChatWindow, Result, MessageInput } from "../components";
 
 const DisplaySessionDetails = () => {
@@ -19,7 +19,7 @@ const DisplaySessionDetails = () => {
 
         setLoading(prev => !prev);
         
-        const response = await axios.get(`http://localhost:9876/api/session/get-session-details?sessionId=${sessionID}`);
+        const response = await axiosInstance.get(`/api/session/get-session-details?sessionId=${sessionID}`);
         
 
         if(!response.data.success){

@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Navigate, Outlet } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from "../utils/axiosInstance";
 import {logout} from "../redux/slices/user.slice.js"
 
 const ProtectedRoute = () => {
@@ -12,8 +12,8 @@ const ProtectedRoute = () => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const response = await axios.post(
-          "http://localhost:9876/api/auth/check-authentication",
+        const response = await axiosInstance.post(
+          "/api/auth/check-authentication",
           {},
           { withCredentials: true }
         );

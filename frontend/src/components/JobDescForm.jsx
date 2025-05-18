@@ -2,7 +2,7 @@ import React from "react";
 
 const JobDescriptionForm = ({ jobDesc, setJobDesc = ()=>{}, handleSubmit=()=>{}, isProcessing = false, isSubmitted = false, handleReset =()=>{}, showReset=true }) => {
   return (
-    <div className="space-y-6 ww-full mx-auto">
+    <div className="space-y-6  mx-auto">
       <div className="flex items-center gap-3">
         <svg
           className="w-8 h-8 text-mercury-400"
@@ -41,10 +41,10 @@ const JobDescriptionForm = ({ jobDesc, setJobDesc = ()=>{}, handleSubmit=()=>{},
         readOnly={isSubmitted}
       />
 
-      <div className="flex justify-between w-full">
+      <div className="flex flex-col gap-2 sm:flex-row justify-between">
         <button
         onClick={handleSubmit}
-        className={`px-8 py-3 font-medium rounded-xl transition-all flex items-center gap-2
+        className={`font-medium px-4 py-4 rounded-xl transition-all flex items-center gap-2
       ${
         (isProcessing || isSubmitted)
           ? "bg-gray-700 text-gray-400 cursor-not-allowed"
@@ -69,7 +69,7 @@ const JobDescriptionForm = ({ jobDesc, setJobDesc = ()=>{}, handleSubmit=()=>{},
       </button>
       <button
         onClick={handleReset}
-        className={`px-8 py-3 font-medium rounded-xl transition-all flex items-center gap-2
+        className={`px-4 py-4 font-medium rounded-xl transition-all flex items-center gap-2
       ${
         (!isSubmitted ||!showReset)
           ? "bg-gray-700 text-gray-400 cursor-not-allowed"

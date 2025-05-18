@@ -1,5 +1,5 @@
 import Message from "../models/message.model.js";
-import { getResponse, setJobDescription } from "../services/gemini.js";
+import { getResponse } from "../services/gemini.js";
 import { v4 as uuidv4 } from "uuid";
 import Session from "../models/session.model.js";
 import Result from "../models/result.model.js";
@@ -14,24 +14,29 @@ const submitJD = async (req, res) => {
       });
     }
 
-    setJobDescription(jd);
     const sessionId = uuidv4();
 
-    const session = new Session({ sessionId, email, jobDescription:jd });
+    const session = new Session({ sessionId, email, jobDescription: jd });
     await session.save();
-
 
     const firstQuestion = await getResponse(
       "Give me the first question now. Just question! nothing else be Professional",
-      [{ role: "user", parts: [{ text: "Hi! Lets start the interview!" }] }]
+      [{ role: "user", parts: [{ text: "Hi! Lets start the interview!" }] }],
+      jd
     );
 
+    if (firstQuestion.includes("[GoogleGenerativeAI Error]:")) {
+      return res.status(500).json({
+        success: false,
+        message: "Internal Server Error",
+      });
+    }
 
     const botMsg = new Message({
       role: "model",
       parts: firstQuestion,
-      sessionId:session.sessionId,
-      email
+      sessionId: session.sessionId,
+      email,
     });
     await botMsg.save();
 
@@ -42,7 +47,6 @@ const submitJD = async (req, res) => {
       session,
     });
   } catch (error) {
-
     // console.log(error.message)
     return res.status(500).json({
       success: false,
@@ -53,12 +57,12 @@ const submitJD = async (req, res) => {
 
 const handleChat = async (req, res) => {
   try {
-    const { message, sessionId, history, email } = req.body;
+    const { message, sessionId, history, email, jobDescription } = req.body;
 
-    if (!message || !sessionId) {
-      return res.status(400).json({
+    if (!message || !sessionId || !email || !jobDescription) {
+      return res.status(401).json({
         success: false,
-        message: "Message or session ID not provided!",
+        message: "All Details Required!",
       });
     }
     if (!history || history.length === 0) {
@@ -68,12 +72,29 @@ const handleChat = async (req, res) => {
       });
     }
 
-    const userMsg = new Message({ role: "user", parts: message, sessionId, email });
+    const userMsg = new Message({
+      role: "user",
+      parts: message,
+      sessionId,
+      email,
+    });
     await userMsg.save();
 
-    const botReply = await getResponse(message, history); 
+    const botReply = await getResponse(message, history, jobDescription);
 
-    const botMsg = new Message({ role: "model", parts: botReply, sessionId, email });
+    if (botReply.includes("[GoogleGenerativeAI Error]:")) {
+      return res.status(500).json({
+        success: false,
+        message: "Internal Server Error",
+      });
+    }
+
+    const botMsg = new Message({
+      role: "model",
+      parts: botReply,
+      sessionId,
+      email,
+    });
     await botMsg.save();
 
     return res.status(200).json({
@@ -93,11 +114,11 @@ const evaluateResult = async (req, res) => {
   try {
     const { sessionId, history, email } = req.body;
 
-    // console.log("In Evaluate Result: ")
+    console.log("In Evaluate Result: ")
 
-    // console.log(req.body);
+    console.log(req.body);
 
-    if (!sessionId || !history || history.length === 0 ||!email) {
+    if (!sessionId || !history || history.length === 0 || !email) {
       return res.status(400).json({
         success: false,
         message: "All details necessary!",
@@ -106,7 +127,7 @@ const evaluateResult = async (req, res) => {
 
     const existingResult = await Result.findOne({ sessionId });
 
-    // console.log("Existing Result: ",existingResult)
+    console.log("Existing Result: ",existingResult)
 
     if (existingResult) {
       return res.status(200).json({
@@ -116,7 +137,7 @@ const evaluateResult = async (req, res) => {
       });
     }
 
-    // console.log("Generating Result");
+    console.log("Generating Result");
 
     // Prompt the AI for evaluation
     const result = await getResponse(
@@ -144,10 +165,12 @@ Score should be between 1 and 10.
       history
     );
 
+
+    console.log("Result generated!");
     let cleanedResult;
     try {
       cleanedResult = JSON.parse(
-        result.replace(/^```json\n?/, '').replace(/\n?```$/, '')
+        result.replace(/^```json\n?/, "").replace(/\n?```$/, "")
       );
     } catch (parseError) {
       // console.error("Failed to parse result JSON:", parseError.message);
@@ -157,6 +180,8 @@ Score should be between 1 and 10.
       });
     }
 
+    console.log("Result cleaned");
+
     // Save result
     const newResult = await Result.create({
       sessionId,
@@ -164,9 +189,9 @@ Score should be between 1 and 10.
       answerAnalysis: cleanedResult.answerAnalysis,
       englishProficiency: cleanedResult.englishProficiency,
       improvementSuggestions: cleanedResult.improvementSuggestions,
-      email
+      email,
     });
-    
+
     await newResult.save();
 
     return res.status(200).json({
@@ -182,7 +207,5 @@ Score should be between 1 and 10.
     });
   }
 };
-
-
 
 export { handleChat, submitJD, evaluateResult };

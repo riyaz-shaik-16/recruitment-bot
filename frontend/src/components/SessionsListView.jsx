@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { addSession, removeSession } from "../redux/slices/session.slice";
-import axios from "axios";
+import axiosInstance from "../utils/axiosInstance";
 import { Loader } from "./";
 import { useNavigate } from "react-router-dom";
 
@@ -25,8 +25,8 @@ const SessionList = () => {
         return;
       }
 
-      const { data } = await axios.get(
-        `http://localhost:9876/api/session/get-all-sessions/${user.email}`
+      const { data } = await axiosInstance.get(
+        `/api/session/get-all-sessions/${user.email}`
       );
 
       if (!data.success) throw new Error("Failed to fetch sessions");
@@ -50,8 +50,8 @@ const SessionList = () => {
 
       setLoading((prev) => !prev);
 
-      const response = await axios.delete(
-        `http://localhost:9876/api/session/delete-session?sessionId=${sessionId}`
+      const response = await axiosInstance.delete(
+        `/api/session/delete-session?sessionId=${sessionId}`
       );
 
       if (!response.data.success) {
@@ -83,7 +83,7 @@ const SessionList = () => {
   }
 
   return (
-    <div className="h-full scrollbar-custom  relative overflow-y-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800 border border-gray-700 p-4 bg-black-pearl-950 shadow-md transition-all duration-200">
+    <div className="h-dvh p-4 scrollbar-custom  relative overflow-y-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800 border border-gray-700 bg-black-pearl-950 shadow-md transition-all duration-200">
       {loading ? (
         <Loader />
       ) : (
@@ -103,10 +103,10 @@ const SessionList = () => {
               sessions.map((session) => (
                 <div
                   key={session._id}
-                  className="group p-4 rounded-lg transition-all duration-200 bg-gray-800 hover:bg-gray-700 border border-gray-600"
+                  className="group p-2 rounded-lg transition-all duration-200 bg-gray-800 hover:bg-gray-700 border border-gray-600"
                 >
-                  <div className="flex items-center justify-between gap-4">
-                    <div className="flex-1 min-w-0">
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="flex-1">
                       <div className="font-medium line-clamp-1 text-mercury-50 mb-1">
                         {(session.jobDescription || "")
                           .split("\n")[0]

@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from "../utils/axiosInstance";
 import { useSelector, useDispatch } from "react-redux";
 import {logout} from "../redux/slices/user.slice.js"
 import {removeAllSessions} from "../redux/slices/session.slice.js"
@@ -21,7 +21,7 @@ const SettingsPage = () => {
     // http://localhost:9876/api/auth/delete-account/sr308379@gmail.com
 
     try {
-      const response = await axios.delete(`http://localhost:9876/api/auth/delete-account/${user.email}`,{withCredentials:true});
+      await axiosInstance.delete(`/api/auth/delete-account/${user.email}`,{withCredentials:true});
 
       // console.log(response);
 

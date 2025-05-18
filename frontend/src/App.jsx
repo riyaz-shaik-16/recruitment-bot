@@ -1,11 +1,9 @@
-// src/App.js
-import React from "react";
+
 import {
   BrowserRouter,
   Routes,
   Route,
   Navigate,
-  Outlet,
 } from "react-router-dom";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import {
@@ -48,11 +46,19 @@ const App = () => {
             )
           }
         />
+        <Route path="/login" element={
+            user && user.isAuthenticated ? (
+              <Navigate to="/profile" />
+            ) : (
+              <GoogleWrapper />
+            )
+          }/>
 
-        <Route path="/login" element={<GoogleWrapper />} />
+        
 
         <Route element={<ProtectedRoute />}>
           <Route element={<Layout />}>
+          
             <Route path="/profile" element={<Profile />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/session" element={<Session />} />

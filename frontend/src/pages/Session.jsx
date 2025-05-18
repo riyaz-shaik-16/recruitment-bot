@@ -6,7 +6,7 @@ import {
   Result,
   Loader,
 } from "../components";
-import axios from "axios";
+import axiosInstance from "../utils/axiosInstance";
 import useSessionStorage from "../customHooks/useSessionStorage";
 import { useSelector, useDispatch } from "react-redux";
 import { addSession } from "../redux/slices/session.slice";
@@ -36,19 +36,23 @@ const Session = () => {
 
   const getResult = async () => {
     // console.log(sessionId);
-    const resultResponse = await axios.post(
-      "http://localhost:9876/api/chat/evaluate-result",
-      {
-        sessionId,
-        history: [
-          { role: "user", parts: [{ text: "Hi! lets start the interview!" }] },
-          ...messages,
-        ],
-        email,
-      }
-    );
-    setResult(resultResponse.data.result);
-    setResultFetched(true);
+    try {
+      const resultResponse = await axiosInstance.post(
+        "/api/chat/evaluate-result",
+        {
+          sessionId,
+          history: [
+            { role: "user", parts: [{ text: "Hi! lets start the interview!" }] },
+            ...messages,
+          ],
+          email,
+        }
+      );
+      setResult(resultResponse.data.result);
+      setResultFetched(true);
+    } catch (error) {
+      alert("Internal Server Error!");
+    }
   };
 
   useEffect(() => {
@@ -91,8 +95,8 @@ const Session = () => {
       } else {
         setIsProcessing((prev) => !prev);
 
-        const response = await axios.post(
-          "http://localhost:9876/api/chat/submit-jd",
+        const response = await axiosInstance.post(
+          "/api/chat/submit-jd",
           {
             jd: jobDesc,
             email,
@@ -147,8 +151,8 @@ const Session = () => {
       setGettingMessage((prev) => !prev);
 
       // Send the message to the backend and get the bot's response
-      const response = await axios.post(
-        "http://localhost:9876/api/chat/handle-chat",
+      const response = await axiosInstance.post(
+        "/api/chat/handle-chat",
         {
           message: text,
           history: [
@@ -160,6 +164,7 @@ const Session = () => {
           ],
           sessionId,
           email,
+          jobDescription:jobDesc
         },
         {
           headers: {
@@ -217,8 +222,8 @@ const Session = () => {
   };
 
   return (
-    <div className="bg-black-pearl-950 w-full min-h-screen pt-8 pb-8 pl-4 pr-4">
-      <div className="w-full  mx-auto  bg-black-pearl-950 rounded-2xl shadow-2xl p-8 space-y-8 border border-gray-700 transition-all duration-300">
+    <div className="w-dvw sm:w-full bg-black-pearl-950 min-h-screen pt-8 pb-8 pl-4 pr-4">
+      <div className="lg:w-ful mx-auto  bg-black-pearl-950 rounded-2xl shadow-2xl p-4 mb-10 space-y-8 border border-gray-700 transition-all duration-300">
         <JobDescriptionForm
           jobDesc={jobDesc}
           setJobDesc={setJobDesc}

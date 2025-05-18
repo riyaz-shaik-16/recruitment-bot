@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { logout } from "../redux/slices/user.slice";
 import { NavLink, useNavigate } from "react-router-dom";
@@ -11,7 +11,7 @@ import {
   FaBars,
   FaTimes,
 } from "react-icons/fa";
-import axios from "axios";
+import axiosInstance from "../utils/axiosInstance";
 import { removeAllSessions } from "../redux/slices/session.slice";
 
 const navLinks = [
@@ -28,8 +28,8 @@ const Sidebar = () => {
 
   const handleLogout = async () => {
     try {
-      const response = await axios.post(
-        "http://localhost:9876/api/auth/logout",
+      const response = await axiosInstance.post(
+        "/api/auth/logout",
         {},
         { withCredentials: true }
       );
@@ -56,8 +56,8 @@ const Sidebar = () => {
   return (
     <>
       <aside
-        className={`h-screen w-64 bg-black-pearl-950 text-gray-100 fixed left-0 top-0 transform transition-transform duration-300 z-50 ${
-          isSidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
+        className={`h-screen w-64 bg-black-pearl-950 text-gray-100 fixed left-0 top-0 transform transition-transform duration-300  ${
+          isSidebarOpen ? "translate-x-0 z-50 fixed left-0 top-0" : "-translate-x-full lg:translate-x-0"
         }`}
       >
         <div className="p-4 flex flex-col justify-between h-full">

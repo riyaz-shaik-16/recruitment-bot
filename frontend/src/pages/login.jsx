@@ -1,5 +1,5 @@
 import React from "react";
-import axios from "axios"
+import axiosInstance from "../utils/axiosInstance"
 import {useGoogleLogin} from "@react-oauth/google";
 
 import {useDispatch} from "react-redux";
@@ -23,7 +23,7 @@ const Login = () => {
 
       if(code){
 
-        const response = await axios.get(`http://localhost:9876/api/auth/google?code=${code}`,{withCredentials:true});
+        const response = await axiosInstance.get(`/api/auth/google?code=${code}`,{withCredentials:true});
 
         // console.log("response: ",response);
 
