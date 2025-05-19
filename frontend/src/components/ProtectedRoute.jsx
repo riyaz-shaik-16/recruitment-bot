@@ -1,13 +1,15 @@
 // src/ProtectedRoute.js
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useNavigate } from "react-router-dom";
 import axiosInstance from "../utils/axiosInstance";
-import {logout} from "../redux/slices/user.slice.js"
+import { logout } from "../redux/slices/user.slice.js";
+import { removeAllSessions } from "../redux/slices/session.slice.js";
 
 const ProtectedRoute = () => {
   const [isAllowed, setIsAllowed] = useState(null);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -18,25 +20,30 @@ const ProtectedRoute = () => {
           { withCredentials: true }
         );
 
-        console.log("In Protected Route: ",response)
+        console.log("In Protected Route: ", response);
 
         if (response.data.success) {
           setIsAllowed(true);
         } else {
-          dispatch(logout())
+          dispatch(logout());
+          dispatch(removeAllSessions());
           setIsAllowed(false);
+          navigate("/login"); // immediate navigation
         }
       } catch (err) {
+        dispatch(logout());
+        dispatch(removeAllSessions());
         setIsAllowed(false);
+        navigate("/login"); // immediate navigation on error
       }
     };
 
     checkAuth();
-  }, [dispatch]);
+  }, [dispatch, navigate]);
 
   if (isAllowed === null) return <div>Loading...</div>;
 
-  return isAllowed ? <Outlet /> : <Navigate to="/login" />;
+  return isAllowed ? <Outlet /> : null;
 };
 
 export default ProtectedRoute;

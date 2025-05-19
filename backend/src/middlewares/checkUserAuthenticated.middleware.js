@@ -33,7 +33,7 @@ const checkUserAuthenticated = async(req,res,next) => {
     } catch (error) {
         // console.log("Error in CheckUSerAuthenticated Middleware: ",error.message);
         return res.status(500).json({
-            suvccess:false,
+            success:false,
             message:"Internal Server Error!"
         })
     }

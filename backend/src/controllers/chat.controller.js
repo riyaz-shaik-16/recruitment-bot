@@ -114,9 +114,9 @@ const evaluateResult = async (req, res) => {
   try {
     const { sessionId, history, email } = req.body;
 
-    console.log("In Evaluate Result: ")
+    // console.log("In Evaluate Result: ")
 
-    console.log(req.body);
+    // console.log(req.body);
 
     if (!sessionId || !history || history.length === 0 || !email) {
       return res.status(400).json({
@@ -127,7 +127,7 @@ const evaluateResult = async (req, res) => {
 
     const existingResult = await Result.findOne({ sessionId });
 
-    console.log("Existing Result: ",existingResult)
+    // console.log("Existing Result: ",existingResult)
 
     if (existingResult) {
       return res.status(200).json({
@@ -137,7 +137,7 @@ const evaluateResult = async (req, res) => {
       });
     }
 
-    console.log("Generating Result");
+    // console.log("Generating Result");
 
     // Prompt the AI for evaluation
     const result = await getResponse(
@@ -166,7 +166,7 @@ Score should be between 1 and 10.
     );
 
 
-    console.log("Result generated!");
+    // console.log("Result generated!");
     let cleanedResult;
     try {
       cleanedResult = JSON.parse(
@@ -180,7 +180,7 @@ Score should be between 1 and 10.
       });
     }
 
-    console.log("Result cleaned");
+    // console.log("Result cleaned");
 
     // Save result
     const newResult = await Result.create({
