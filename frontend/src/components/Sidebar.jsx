@@ -57,7 +57,9 @@ const Sidebar = () => {
     <>
       <aside
         className={`h-screen w-64 bg-black-pearl-950 text-gray-100 fixed left-0 top-0 transform transition-transform duration-300  ${
-          isSidebarOpen ? "translate-x-0 z-50 fixed left-0 top-0" : "-translate-x-full lg:translate-x-0"
+          isSidebarOpen
+            ? "translate-x-0 z-50 fixed left-0 top-0"
+            : "-translate-x-full lg:translate-x-0"
         }`}
       >
         <div className="p-4 flex flex-col justify-between h-full">
@@ -95,12 +97,21 @@ const Sidebar = () => {
                   <span>{link.label}</span>
                 </NavLink>
               ))}
+              <div className="border-t sm:hidden border-gray-700 pt-2">
+                <button
+                  className="flex items-center gap-4 rounded-lg hover:bg-black-pearl-950 hover:text-mercury-600 cursor-pointer transition-all duration-200 group"
+                  onClick={handleLogout}
+                >
+                  <FaSignOutAlt className="text-lg w-6 group-hover:scale-110 transition-transform" />
+                  <span>Logout</span>
+                </button>
+              </div>
             </nav>
           </div>
 
-          <div className="border-t border-gray-700 pt-2">
+          <div className="border-t hidden sm:visible border-gray-700 pt-2">
             <button
-              className="flex mb-5 sm:mb-0 items-center gap-4 rounded-lg hover:bg-black-pearl-950 hover:text-mercury-600 cursor-pointer transition-all duration-200 group"
+              className="flex items-center gap-4 rounded-lg hover:bg-black-pearl-950 hover:text-mercury-600 cursor-pointer transition-all duration-200 group"
               onClick={handleLogout}
             >
               <FaSignOutAlt className="text-lg w-6 group-hover:scale-110 transition-transform" />
