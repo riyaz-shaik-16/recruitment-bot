@@ -20,7 +20,7 @@ const Login = () => {
           `/api/auth/google?code=${code}`,
           { withCredentials: true }
         );
-        console.log("Response: ",response);
+        // console.log("Response: ",response);
         dispatch(login(response.data.user));
         navigate("/dashboard");
       }

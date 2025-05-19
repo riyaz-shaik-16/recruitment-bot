@@ -1,10 +1,11 @@
 // src/ProtectedRoute.js
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Navigate, Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import axiosInstance from "../utils/axiosInstance";
 import { logout } from "../redux/slices/user.slice.js";
 import { removeAllSessions } from "../redux/slices/session.slice.js";
+import Loader from "./Loader.jsx"
 
 const ProtectedRoute = () => {
   const [isAllowed, setIsAllowed] = useState(null);
@@ -20,7 +21,7 @@ const ProtectedRoute = () => {
           { withCredentials: true }
         );
 
-        console.log("In Protected Route: ", response);
+        // console.log("In Protected Route: ", response);
 
         if (response.data.success) {
           setIsAllowed(true);
@@ -41,7 +42,7 @@ const ProtectedRoute = () => {
     checkAuth();
   }, [dispatch, navigate]);
 
-  if (isAllowed === null) return <div>Loading...</div>;
+  if (isAllowed === null) return <Loader/>;
 
   return isAllowed ? <Outlet /> : null;
 };
