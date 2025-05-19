@@ -9,15 +9,16 @@ import User from "../models/user.model.js"
 
 const googleAuth = async (req, res) => {
 
-  // console.log("In Google Auth Backend");
+  console.log("In Google Auth Backend");
   try {
     const { code } = req.query;
 
-    if (!code)
+    if (!code){
       return res
         .status(400)
         .json({ success: false, message: "No code provided!" });
-
+    
+      }
     // Get the access and ID token from Google
     const tokenRes = await axios.post(
       "https://oauth2.googleapis.com/token",
@@ -35,6 +36,7 @@ const googleAuth = async (req, res) => {
       }
     );
 
+    console.log("got the token res");
     const { access_token, id_token } = tokenRes.data;
 
     // Get user info from Google
@@ -45,6 +47,7 @@ const googleAuth = async (req, res) => {
       }
     );
 
+    console.log("Got the user info");
     const user = userInfo.data;
 
     // Check if the user already exists
