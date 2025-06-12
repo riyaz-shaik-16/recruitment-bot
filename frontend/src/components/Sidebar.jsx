@@ -97,7 +97,7 @@ const Sidebar = () => {
                   <span>{link.label}</span>
                 </NavLink>
               ))}
-              <div className="border-t sm:hidden border-gray-700 pt-2">
+              <div className="border-t visible sm:hidden border-gray-700 pt-2">
                 <button
                   className="flex items-center gap-4 rounded-lg hover:bg-black-pearl-950 hover:text-mercury-600 cursor-pointer transition-all duration-200 group"
                   onClick={handleLogout}
