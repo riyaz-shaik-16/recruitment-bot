@@ -97,7 +97,7 @@ const Sidebar = () => {
                   <span>{link.label}</span>
                 </NavLink>
               ))}
-              <div className="border-t hidden sm:block border-gray-700 p-2">
+              <div className="border-t border-gray-700 p-2">
                 <button
                   className="flex items-center gap-4 rounded-lg hover:bg-black-pearl-950 hover:text-mercury-600 cursor-pointer transition-all duration-200 group"
                   onClick={handleLogout}
@@ -107,16 +107,6 @@ const Sidebar = () => {
                 </button>
               </div>
             </nav>
-          </div>
-
-          <div className="border-t block sm:hidden border-gray-700 pt-2">
-            <button
-              className="flex items-center gap-4 rounded-lg hover:bg-black-pearl-950 hover:text-mercury-600 cursor-pointer transition-all duration-200 group"
-              onClick={handleLogout}
-            >
-              <FaSignOutAlt className="text-lg w-6 group-hover:scale-110 transition-transform" />
-              <span>Logout</span>
-            </button>
           </div>
         </div>
       </aside>
