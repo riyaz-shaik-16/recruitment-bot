@@ -26,12 +26,14 @@ const ProtectedRoute = () => {
         if (response.data.success) {
           setIsAllowed(true);
         } else {
+          localStorage.removeItem("token");
           dispatch(logout());
           dispatch(removeAllSessions());
           setIsAllowed(false);
           navigate("/login"); // immediate navigation
         }
       } catch (err) {
+        localStorage.removeItem("token")
         dispatch(logout());
         dispatch(removeAllSessions());
         setIsAllowed(false);

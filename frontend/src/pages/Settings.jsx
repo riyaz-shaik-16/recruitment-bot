@@ -26,6 +26,7 @@ const SettingsPage = () => {
       // console.log(response);
 
       dispatch(logout());
+      localStorage.clear();
       dispatch(removeAllSessions());
 
       sessionStorage.clear();

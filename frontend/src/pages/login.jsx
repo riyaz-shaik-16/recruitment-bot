@@ -22,6 +22,7 @@ const Login = () => {
         );
         // console.log("Response: ",response);
         dispatch(login(response.data.user));
+        localStorage.setItem("token",response?.data?.token)
         navigate("/dashboard");
       }
     } catch (error) {

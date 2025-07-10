@@ -40,6 +40,7 @@ const Sidebar = () => {
       }
 
       sessionStorage.clear(); // Clears all keys
+      localStorage.clear();
       dispatch(logout());
       dispatch(removeAllSessions());
       navigate("/");

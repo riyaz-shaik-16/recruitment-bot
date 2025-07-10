@@ -1,10 +1,4 @@
-
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import {
   Login,
@@ -15,7 +9,7 @@ import {
   Layout,
   Session,
   Settings,
-  DisplaySessionDetails
+  DisplaySessionDetails,
 } from "./pages";
 import { ProtectedRoute } from "./components";
 import { useSelector } from "react-redux";
@@ -46,19 +40,19 @@ const App = () => {
             )
           }
         />
-        <Route path="/login" element={
+        <Route
+          path="/login"
+          element={
             user && user.isAuthenticated ? (
               <Navigate to="/profile" />
             ) : (
               <GoogleWrapper />
             )
-          }/>
-
-        
+          }
+        />
 
         <Route element={<ProtectedRoute />}>
           <Route element={<Layout />}>
-          
             <Route path="/profile" element={<Profile />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/session" element={<Session />} />
