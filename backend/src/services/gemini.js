@@ -49,7 +49,7 @@ const getResponse = async (prompt, history = [], jobDescription = "") => {
 
     return typeof text === "string" ? text : JSON.stringify(text);
   } catch (error) {
-    // console.error("Gemini Error:", error);
+     console.error("Gemini Error:", error);
     return error.message || "Something went wrong with the AI.";
   }
 };
