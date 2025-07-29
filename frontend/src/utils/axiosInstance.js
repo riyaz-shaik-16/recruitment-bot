@@ -2,8 +2,7 @@ import axios from 'axios';
 // import { useNavigate } from 'react-router-dom';
 
 const axiosInstance = axios.create({
-  baseURL: 'https://recruitment-bot-lk9m.onrender.com', // common base URL
-  // baseURL:"http://localhost:9876",
+  baseURL: import.meta.env.VITE_BACKEND_URL || "http://localhost:9876",
   headers: {
     'Content-Type': 'application/json',
   },
