@@ -39,7 +39,7 @@ const Sidebar = () => {
         return;
       }
 
-      sessionStorage.clear(); // Clears all keys
+      sessionStorage.clear(); 
       localStorage.clear();
       dispatch(logout());
       dispatch(removeAllSessions());
@@ -66,7 +66,7 @@ const Sidebar = () => {
         <div className="p-4 flex flex-col justify-between h-full">
           {/* Close Button */}
           <button
-            className="lg:hidden absolute right-4 top-4 p-2 hover:text-mercury-400"
+            className="lg:hidden cursor-pointer absolute right-4 top-4 p-2 hover:text-mercury-400"
             onClick={() => setIsSidebarOpen(false)}
           >
             <FaTimes className="text-xl" />
@@ -124,7 +124,7 @@ const Sidebar = () => {
 
           {!isSidebarOpen && (
             <button
-              className="p-2 text-gray-300 hover:text-amber-400 transition-colors"
+              className="p-2 text-gray-300 cursor-pointer hover:text-amber-400 transition-colors"
               onClick={() => setIsSidebarOpen(true)}
             >
               <FaBars className="w-6 h-6" />

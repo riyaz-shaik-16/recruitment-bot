@@ -1,16 +1,17 @@
 // src/ProtectedRoute.js
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import axiosInstance from "../utils/axiosInstance";
-import { logout } from "../redux/slices/user.slice.js";
+import { login, logout } from "../redux/slices/user.slice.js";
 import { removeAllSessions } from "../redux/slices/session.slice.js";
-import Loader from "./Loader.jsx"
+import Loader from "./Loader.jsx";
 
 const ProtectedRoute = () => {
   const [isAllowed, setIsAllowed] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -21,30 +22,33 @@ const ProtectedRoute = () => {
           { withCredentials: true }
         );
 
-        // console.log("In Protected Route: ", response);
+        // console.log("Response: ",response);
 
         if (response.data.success) {
+          dispatch(login(response.data.user))
           setIsAllowed(true);
         } else {
-          localStorage.removeItem("token");
-          dispatch(logout());
-          dispatch(removeAllSessions());
-          setIsAllowed(false);
-          navigate("/login"); // immediate navigation
+          throw new Error("Unauthorized");
         }
       } catch (err) {
-        localStorage.removeItem("token")
+        // Clear user state, but delay navigation
+        localStorage.removeItem("token");
         dispatch(logout());
         dispatch(removeAllSessions());
         setIsAllowed(false);
-        navigate("/login"); // immediate navigation on error
       }
     };
 
     checkAuth();
-  }, [dispatch, navigate]);
+  }, [dispatch]);
 
-  if (isAllowed === null) return <Loader/>;
+  useEffect(() => {
+    if (isAllowed === false) {
+      navigate("/login", { replace: true, state: { from: location } });
+    }
+  }, [isAllowed, navigate, location]);
+
+  if (isAllowed === null) return <Loader />;
 
   return isAllowed ? <Outlet /> : null;
 };

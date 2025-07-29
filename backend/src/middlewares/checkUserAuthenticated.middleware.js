@@ -23,10 +23,10 @@ const checkUserAuthenticated = async(req,res,next) => {
       const existingUser = await User.findOne({email:decoded.email});
 
       if(!existingUser || existingUser.length === 0){
-        req.validUser = false
+        req.validUser = null
       }
 
-      req.validUser = true,
+      req.validUser = existingUser,
 
       next();
         

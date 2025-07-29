@@ -1,41 +1,9 @@
-import React from "react";
-import axiosInstance from "../utils/axiosInstance";
-import { useGoogleLogin } from "@react-oauth/google";
-
-import { useDispatch } from "react-redux";
-
-import { login } from "../redux/slices/user.slice";
-
-import { useNavigate } from "react-router-dom";
-
 const Login = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:9876";
 
-  const googleResponse = async (authResult) => {
-    try {
-      const code = authResult["code"];
-      if (code) {
-        const response = await axiosInstance.get(
-          `/api/auth/google?code=${code}`,
-          { withCredentials: true }
-        );
-        // console.log("Response: ",response);
-        dispatch(login(response.data.user));
-        localStorage.setItem("token",response?.data?.token)
-        navigate("/dashboard");
-      }
-    } catch (error) {
-      alert("Something went Wrong!");
-    }
+  const handleOnClick = () => {
+    window.location.href = `${BACKEND_URL}/api/auth/google`;
   };
-
-  const handleOnClick = useGoogleLogin({
-    onSuccess: googleResponse,
-    onError: googleResponse,
-    flow: "auth-code",
-  });
-
 
   return (
     <div className="min-h-screen w-full bg-gray-900 flex items-center justify-center p-4">

@@ -1,5 +1,4 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { GoogleOAuthProvider } from "@react-oauth/google";
 import {
   Login,
   Dashboard,
@@ -13,14 +12,6 @@ import {
 } from "./pages";
 import { ProtectedRoute } from "./components";
 import { useSelector } from "react-redux";
-
-const GoogleWrapper = () => {
-  return (
-    <GoogleOAuthProvider clientId="94337969637-camq3qpmo5sf706jrr4qclie0nvsk47u.apps.googleusercontent.com">
-      <Login />
-    </GoogleOAuthProvider>
-  );
-};
 
 const App = () => {
   const user = useSelector((state) => state.user);
@@ -46,7 +37,7 @@ const App = () => {
             user && user.isAuthenticated ? (
               <Navigate to="/profile" />
             ) : (
-              <GoogleWrapper />
+              <Login />
             )
           }
         />

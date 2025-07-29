@@ -1,16 +1,20 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import "./services/passport.js"
+
 
 import authRouter from "./routes/auth.route.js"
 import chatRouter from "./routes/chat.route.js"
 import sessionRouter from "./routes/session.route.js"
+import passport from "passport";
 
 
 const app = express();
 app.use(cookieParser());
+app.use(passport.initialize());
 
-const allowedOrigin = process.env.CLIENT_URI;
+const allowedOrigin = process.env.CLIENT_URI ;
 app.use(
   cors({
     origin: allowedOrigin,
