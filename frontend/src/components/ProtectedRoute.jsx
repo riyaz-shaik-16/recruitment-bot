@@ -48,7 +48,7 @@ const ProtectedRoute = () => {
     }
   }, [isAllowed, navigate, location]);
 
-  if (isAllowed === null) return <Loader />;
+  if (isAllowed === null) return <div className="h-full w-full flex justify-center items-center"><Loader /></div>;
 
   return isAllowed ? <Outlet /> : null;
 };
