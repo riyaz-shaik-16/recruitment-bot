@@ -12,6 +12,7 @@ import {
 } from "./pages";
 import { ProtectedRoute } from "./components";
 import { useSelector } from "react-redux";
+import AuthSuccess from "./pages/AuthSuccess";
 
 const App = () => {
   const user = useSelector((state) => state.user);
@@ -55,6 +56,7 @@ const App = () => {
           </Route>
         </Route>
 
+        <Route path="/auth-success" element={<AuthSuccess />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </BrowserRouter>
