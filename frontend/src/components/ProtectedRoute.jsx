@@ -32,7 +32,7 @@ const ProtectedRoute = () => {
         }
       } catch (err) {
         // Clear user state, but delay navigation
-        localStorage.removeItem("token");
+        localStorage.removeItem("rec-bot-token");
         dispatch(logout());
         dispatch(removeAllSessions());
         setIsAllowed(false);

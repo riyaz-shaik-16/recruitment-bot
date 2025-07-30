@@ -38,7 +38,7 @@ export const handleGoogleCallback = async (req, res) => {
       maxAge: 24 * 60 * 60 * 1000,
     });
 
-    return res.redirect("https://recruitment-bot-alpha.vercel.app/profile");
+    return res.redirect(`https://recruitment-bot-alpha.vercel.app/auth-success?token=${token}`);
   } catch (err) {
     res
       .status(500)

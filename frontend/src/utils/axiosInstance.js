@@ -11,7 +11,7 @@ const axiosInstance = axios.create({
 // 🔒 Add token to request headers if it exists
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token'); // adjust the key if stored under a different name
+    const token = localStorage.getItem('rec-bot-token'); // adjust the key if stored under a different name
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
