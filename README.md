@@ -1,7 +1,6 @@
 ﻿# Recruitment Bot
 
 
-
 ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
 ![Node.js](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
 ![MongoDB](https://img.shields.io/badge/MongoDB-%234ea94b.svg?style=for-the-badge&logo=mongodb&logoColor=white)
@@ -11,9 +10,6 @@
 
 An AI-powered recruitment assistant that conducts dynamic interviews, evaluates candidates, and adapts its questioning based on their responses. This project is built with a modern MERN stack, integrates with Google's Gemini API for intelligent conversation, and is deployed on a scalable cloud infrastructure.
 
-##  Live Demo
-
-Check out the live version of the application: **[https://recruitment-bot.riyazdev.site](https://recruitment-bot.riyazdev.site)**
 
 ##  Features
 
@@ -126,4 +122,5 @@ The frontend will be available at `http://localhost:5173`.
 ---
 
 Authored by [Riyaz Shaik](https://github.com/riyaz-shaik-16).
+
 
